@@ -303,6 +303,17 @@ local function tryUpdatePlayer(player)
             end
         end)
 
+        -- damn
+        if _G.CrazyAmyChargeEndDetectConn then
+            _G.CrazyAmyChargeEndDetectConn:Disconnect()
+            print("[CrazyAmy] Previous CrazyAmyChargeEndDetectConn disconnected")
+        end
+        _G.CrazyAmyChargeEndDetectConn = game.CollectionService:GetInstanceRemovedSignal("IFrame"):Connect(function(Inst)
+            if Inst.Name ~= player.Name then return end
+            Throw:AdjustSpeed(1)
+            if Throw.IsPlaying then Throw:Stop(0.3) end
+        end)
+
         player.Humanoid.Animator.AnimationPlayed:Connect(function(track)
             --print("PLAYED: "..track.Name.." - "..track.Animation.AnimationId)
             local id = track.Animation.AnimationId
@@ -313,18 +324,13 @@ local function tryUpdatePlayer(player)
                 altIdle:Stop(0.1)
                 Drop:Play(0.1)
                 Drop:AdjustSpeed(2)
+                task.wait(0.2) --
                 Throw:Play(0.1)
                 track.Stopped:Once(function() Throw:AdjustSpeed(1) Throw:Stop(0.3) end)
                 task.wait(0.3) --
                 if Throw.IsPlaying then Throw:AdjustSpeed(0) end
                 task.wait(1) --
                 Drop:AdjustSpeed(1)
-                -- there is a bug uncontrl charge doesnt stop anim
-                player:GetAttributeChangedSignal("SpeedBoost"):Once(function()
-                    track:Stop(0.3)
-                    Throw:AdjustSpeed(1) 
-                    Throw:Stop(0.3)
-                end)
             end
             if track.Name == "climb" then
                 DropClimb:Play(0.1)
@@ -475,7 +481,6 @@ local function tryUpdatePlayer(player)
 
     print("[CrazyAmy] Updating finished for", player.Name .. "!")
 end
-
 
 local function onPlayerAdded(player)
     -- Check if they already spawned in
