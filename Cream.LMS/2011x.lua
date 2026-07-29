@@ -1,4 +1,4 @@
-print("[Cream x 2011x] Now loading... Made by lil2kki <3")
+print("[Cream.LMS for 2011x] Now loading... Made by lil2kki <3")
 
 -- storage animator set
 local OldAnimate = game.ReplicatedStorage:FindFirstChild("Characters", true):FindFirstChild("2011x", true):FindFirstChild("Animate", true)
@@ -84,7 +84,7 @@ end
 -- Cream Icons
 while game.ReplicatedStorage.ClientAssets.Icons:FindFirstChild("2011x") do
     game.ReplicatedStorage.ClientAssets.Icons["2011x"]:Destroy()
-    warn("[Cream x 2011x] Old icons removed")
+    warn("[Cream.LMS for 2011x] Old icons removed")
 end
 local icons = game.ReplicatedStorage.ClientAssets.Icons.Cream:Clone()
 icons.Parent = game.ReplicatedStorage.ClientAssets.Icons
@@ -102,10 +102,10 @@ local function tryUpdatePlayer(player)
     if player:GetAttribute("Character") ~= "2011x" then return end
     if player:GetAttribute("Skin") ~= "Default" then return end
 
-    print("[Cream x 2011x] Prebuild updating model for " .. player.Name .. "...")
+    print("[Cream.LMS for 2011x] Prebuild updating model for " .. player.Name .. "...")
 
     if player:FindFirstChild("OverlayModel") then
-        warn("[Cream x 2011x] Player already have OverlayModel, update cancelled")
+        warn("[Cream.LMS for 2011x] Player already have OverlayModel, update cancelled")
         return
     end
 
@@ -163,7 +163,7 @@ local function tryUpdatePlayer(player)
 
         local anims = game.ReplicatedStorage.ClientAssets.Characters.EXE["2011x"].scriptstuff.Animate.Anims
 
-        local CreamAnimateModule = loadstring(game:HttpGet("https://raw.githubusercontent.com/thaLILNIKKI/Cream.LMS-Outcome-Memories/refs/heads/main/CreamAnimate.lua"))()
+        local CreamAnimateModule = loadstring(game:HttpGet("https://github.com/lil2kki/My-Outcome-Memories/raw/HEAD/Cream.LMS/CreamAnimate.lua"))()
         local CreamAnimate = CreamAnimateModule.setup(player, anims)
 
         cheese.Parent = workspace
@@ -237,10 +237,10 @@ local function tryUpdatePlayer(player)
             end
         end)
 
-        print("[Cream x 2011x] Cream animatior added!")
+        print("[Cream.LMS for 2011x] Cream animatior added!")
     end
 
-    print("[Cream x 2011x] Character ready! Updating " .. player:GetFullName() .. "...")
+    print("[Cream.LMS for 2011x] Character ready! Updating " .. player:GetFullName() .. "...")
     
     -- Char Model
     local ogHRP = player:FindFirstChild("HumanoidRootPart", true)
@@ -319,7 +319,7 @@ local function tryUpdatePlayer(player)
 
     -- add state (animatior needs it)
     if not player:GetAttribute("State") then 
-        warn("[Cream x 2011x] Added default state attribute for", player.Name) 
+        warn("[Cream.LMS for 2011x] Added default state attribute for", player.Name) 
         player:SetAttribute("State", "default") 
     end
 
@@ -457,7 +457,7 @@ local function tryUpdatePlayer(player)
     task.spawn(function() headnervsss(player) end)
 
 
-    print("[Cream x 2011x] Updating finished for", player.Name .. "!")
+    print("[Cream.LMS for 2011x] Updating finished for", player.Name .. "!")
 end
 
 
@@ -468,7 +468,7 @@ local function onPlayerAdded(player)
     _G.Cream2011xCharacterAddedConn = _G.Cream2011xCharacterAddedConn or {}
     if _G.Cream2011xCharacterAddedConn[player.Name] then
         _G.Cream2011xCharacterAddedConn[player.Name]:Disconnect()
-        print("[Cream x 2011x] Previous Cream2011xCharacterAddedConn disconnected for", player.Name)
+        print("[Cream.LMS for 2011x] Previous Cream2011xCharacterAddedConn disconnected for", player.Name)
     end
     _G.Cream2011xCharacterAddedConn[player.Name] = player.CharacterAdded:Connect(tryUpdatePlayer) 
 end
@@ -477,32 +477,27 @@ for _, player in game.Players:GetPlayers() do onPlayerAdded(player) end
 
 if _G.Cream2011xPlayerAddedConn then
     _G.Cream2011xPlayerAddedConn:Disconnect()
-    print("[Cream x 2011x] Previous Cream2011xPlayerAddedConn disconnected")
+    print("[Cream.LMS for 2011x] Previous Cream2011xPlayerAddedConn disconnected")
 end
 _G.Cream2011xPlayerAddedConn = game.Players.PlayerAdded:Connect(onPlayerAdded)
 
 if _G.Cream2011xSkinTESTINGDUMMYConn then
     _G.Cream2011xSkinTESTINGDUMMYConn:Disconnect()
-    print("[Cream x 2011x] Previous Cream2011xSkinTESTINGDUMMYConn disconnected")
+    print("[Cream.LMS for 2011x] Previous Cream2011xSkinTESTINGDUMMYConn disconnected")
 end
 _G.Cream2011xSkinTESTINGDUMMYConn = game.CollectionService:GetInstanceAddedSignal("TESTINGDUMMY"):Connect(tryUpdatePlayer)
 
 local function myAsset(fileName)
-    local cachePath = "cache/cream-on-2011x/" .. fileName
+    local cachePath = "cache/lil2kki/Cream.LMS/" .. fileName
     if isfile(cachePath) then return getcustomasset(cachePath) end
-    local success, result = pcall(
-        function()
-            return game:HttpGet(
-                "https://github.com/thaLILNIKKI/Cream.LMS-for-TailsDoll-Outcome-Memories/releases/download/"
-                .. "assets/" .. fileName
-            )
-        end
-    )
+    local success, result = pcall(function()
+        return game:HttpGet("https://github.com/lil2kki/My-Outcome-Memories/raw/HEAD/Cream.LMS/assets/" .. fileName) 
+    end)
     if success and result then
         writefile(cachePath, result)
         return getcustomasset(cachePath)
     else
-        warn("[Cream x 2011x] failed to load " .. fileName)
+        warn("[Cream.LMS for 2011x] failed to load " .. fileName)
         return nil
     end
 end
