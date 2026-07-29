@@ -1,32 +1,29 @@
 # Cream.LMS
-puts cream model over tripwire. makes cream eyes black. replaces sounds.
-- Terror Radius - https://www.youtube.com/watch?v=McPUkdesydM (pt1)
-- Normal Chase - https://www.youtube.com/watch?v=McPUkdesydM (pt2)
-- Last Life Chase - https://www.youtube.com/watch?v=WJv3k06iybo
+
+Replacement skins for some characters featuring Cream.LMS meme character.
 
 > tested on [xeno](https://discord.gg/xe-no)
 
 ## Loadstr for TailsDoll
 ```lua
 loadstring(game:HttpGet(
-  "https://raw.githubusercontent.com/thaLILNIKKI/"
-  .."Cream.LMS-Outcome-Memories/HEAD/"
-  .."doll.lua"
+  "https://raw.githubusercontent.com/lil2kki/My-Outcome-Memories/HEAD/"
+  .."Cream.LMS/doll.lua"
 ))()
 ```
-## Loadstr for 2011x [FIXED]
+## Loadstr for 2011x
 ```lua
 loadstring(game:HttpGet(
-  "https://raw.githubusercontent.com/thaLILNIKKI/"
-  .."Cream.LMS-Outcome-Memories/HEAD/"
-  .."2011x.lua"
+  "https://raw.githubusercontent.com/lil2kki/My-Outcome-Memories/HEAD/"
+  .."Cream.LMS/2011x.lua"
 ))()
 ```
 ## Loadstr for Cream
 ```lua
 loadstring(game:HttpGet(
-  "https://raw.githubusercontent.com/thaLILNIKKI/"
-  .."Cream.LMS-Outcome-Memories/HEAD/"
-  .."me.lua"
+  "https://raw.githubusercontent.com/lil2kki/My-Outcome-Memories/HEAD/"
+  .."Cream.LMS/me.lua"
 ))()
 ```
+<img width="694" height="395" alt="image" src="https://github.com/user-attachments/assets/57207c83-75ef-47c2-8924-a9a1b1fde28b" />
+
