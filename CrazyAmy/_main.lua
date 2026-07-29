@@ -514,9 +514,6 @@ local function myAsset(fileName)
     end
 end
 
-for i = 1, 20 do table.insert(_G.CrazyAmy_StunSounds, myAsset("StunSounds" .. i .. ".mp3")) end
-for i = 1, 15 do table.insert(_G.CrazyAmy_DownedSounds, myAsset("DownedSounds" .. i .. ".mp3")) end
-
 table.insert(_G.CrazyAmy_AttackSounds, myAsset("AttackSounds" .. 2 .. ".mp3"))
 table.insert(_G.CrazyAmy_AttackSounds, myAsset("AttackSounds" .. 3 .. ".mp3"))
 
@@ -540,3 +537,6 @@ themes.Default.NormalChase.LoopRegion = NumberRange.new(0, 0)
 themes.Default.LastLifeChase.SoundId = myAsset("LastLifeChase.mp3")
 themes.Default.LastLifeChase.PlaybackRegion = NumberRange.new(0, 0)
 themes.Default.LastLifeChase.LoopRegion = NumberRange.new(0, 0)
+
+for i = 1, 20 do table.insert(_G.CrazyAmy_StunSounds, myAsset("StunSounds" .. i .. ".mp3")) end
+for i = 1, 15 do table.insert(_G.CrazyAmy_DownedSounds, myAsset("DownedSounds" .. i .. ".mp3")) end
