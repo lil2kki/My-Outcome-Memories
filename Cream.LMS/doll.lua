@@ -1,11 +1,11 @@
-print("[Cream x TailsDoll] Now loading... Made by lil2kki <3")
+print("[Cream.LMS for TailsDoll] Now loading... Made by lil2kki <3")
 
 -- MODEL SETUP IN ReplicatedStorage (for UI and overlay ref)
 
     -- Add Icons
     while game.ReplicatedStorage.ClientAssets.Icons:FindFirstChild("TailsDoll") do
         game.ReplicatedStorage.ClientAssets.Icons.TailsDoll:Destroy()
-        warn("[Cream x TailsDoll] Old icons removed")
+        warn("[Cream.LMS for TailsDoll] Old icons removed")
     end
     local icons = game.ReplicatedStorage.ClientAssets.Icons.Cream:Clone()
     icons.Parent = game.ReplicatedStorage.ClientAssets.Icons
@@ -19,7 +19,7 @@ print("[Cream x TailsDoll] Now loading... Made by lil2kki <3")
 
     local old = tar:FindFirstChild("_OLD", true)
     if OLD_THERE_ALR then
-        warn("[Cream x TailsDoll] Restoring original skin")
+        warn("[Cream.LMS for TailsDoll] Restoring original skin")
         tar:FindFirstChild("Default", true):Destroy()
         OLD_THERE_ALR.Name = "Default"
     end
@@ -32,7 +32,7 @@ print("[Cream x TailsDoll] Now loading... Made by lil2kki <3")
     src = src:FindFirstChild("Skins", true)
     src = src:FindFirstChild("Default", true)
 
-    if not tar or not src then warn("[Cream x TailsDoll] Models not found!") return end
+    if not tar or not src then warn("[Cream.LMS for TailsDoll] Models not found!") return end
 
     -- clone cream
     local model = src:Clone()
@@ -146,19 +146,18 @@ print("[Cream x TailsDoll] Now loading... Made by lil2kki <3")
     local dress = model:FindFirstChild("dress", true)
     dress.Material = Enum.Material.Sandstone
 
-    print("[Cream x TailsDoll] Model setup done...")
+    print("[Cream.LMS for TailsDoll] Model setup done...")
 --
 
-local function tryUpdatePlayer(name)
-    local player = workspace:FindFirstChild(name, true)
-    if not player then return end
+local function tryUpdatePlayer(player)
+    if not player:IsA("Model") then return end
 
     if player:GetAttribute("Character") ~= "TailsDoll" then return end
 
-    print("[Cream x TailsDoll] Updating model for " .. player.Name .. "...")
+    print("[Cream.LMS for TailsDoll] Updating model for " .. player.Name .. "...")
 
     if player:FindFirstChild("OverlayModel") then
-        warn("[Cream x TailsDoll] Player already have OverlayModel, update cancelled")
+        warn("[Cream.LMS for TailsDoll] Player already have OverlayModel, update cancelled")
         return
     end
 
@@ -302,17 +301,25 @@ local function tryUpdatePlayer(name)
 
 end
 
-_G.CreamTailsDollSkinPlayersConn = _G.CreamTailsDollSkinPlayersConn or nil
-if _G.CreamTailsDollSkinPlayersConn then
-    _G.CreamTailsDollSkinPlayersConn:Disconnect()
-    _G.CreamTailsDollSkinPlayersConn = nil
-    print("[Cream x TailsDoll] Previous workspace.Players folder ChildAdded connection destroyed")
+local function onPlayerAdded(player)
+    -- Check if they already spawned in
+    if player.Character then tryUpdatePlayer(player.Character) end
+    -- Listen for the player (re)spawning
+    _G.Cream2011xCharacterAddedConn = _G.Cream2011xCharacterAddedConn or {}
+    if _G.Cream2011xCharacterAddedConn[player.Name] then
+        _G.Cream2011xCharacterAddedConn[player.Name]:Disconnect()
+        print("[Cream.LMS for 2011x] Previous Cream2011xCharacterAddedConn disconnected for", player.Name)
+    end
+    _G.Cream2011xCharacterAddedConn[player.Name] = player.CharacterAdded:Connect(tryUpdatePlayer) 
 end
-_G.CreamTailsDollSkinPlayersConn = workspace.Players.ChildAdded:Connect(function(player)
-    tryUpdatePlayer(player.Name)
-end)
 
-for _, player in ipairs(workspace.Players:GetChildren()) do tryUpdatePlayer(player.Name) end
+for _, player in game.Players:GetPlayers() do onPlayerAdded(player) end
+
+if _G.Cream2011xPlayerAddedConn then
+    _G.Cream2011xPlayerAddedConn:Disconnect()
+    print("[Cream.LMS for 2011x] Previous Cream2011xPlayerAddedConn disconnected")
+end
+_G.Cream2011xPlayerAddedConn = game.Players.PlayerAdded:Connect(onPlayerAdded)
 
 
 -- if game then return end
@@ -341,11 +348,11 @@ for _, player in ipairs(workspace.Players:GetChildren()) do tryUpdatePlayer(play
         if not desc or not desc.Parent then return end
         if not desc:IsA("TextLabel") then return end
         if not TextLabelNames[desc.Name] then return end
-        -- warn("[Cream x TailsDoll] Watching TextLabel: "..desc.Name)
+        -- warn("[Cream.LMS for TailsDoll] Watching TextLabel: "..desc.Name)
         coroutine.wrap(function()
             while true do
                 if not desc or not desc.Parent then 
-                    -- warn("[Cream x TailsDoll] Lost TextLabel to watch: "..desc:GetFullName()) 
+                    -- warn("[Cream.LMS for TailsDoll] Lost TextLabel to watch: "..desc:GetFullName()) 
                     return 
                 end
                 if textReplacements[desc.Text] then desc.Text = textReplacements[desc.Text] end
@@ -360,7 +367,7 @@ for _, player in ipairs(workspace.Players:GetChildren()) do tryUpdatePlayer(play
     end
     _G.CreamOnTailsDollGUIConn = game.Players.LocalPlayer:WaitForChild("PlayerGui").DescendantAdded:Connect(hookLabel)
     for _, desc in ipairs(game.Players.LocalPlayer:WaitForChild("PlayerGui"):GetDescendants()) do hookLabel(desc) end
-    print("[Cream x TailsDoll] Listening for your GUI...")
+    print("[Cream.LMS for TailsDoll] Listening for your GUI...")
 --
 
 -- CUSTOM SOUNDS
@@ -374,7 +381,7 @@ for _, player in ipairs(workspace.Players:GetChildren()) do tryUpdatePlayer(play
     if _G.CreamOnTailsDollSkinSoundConn then
         _G.CreamOnTailsDollSkinSoundConn:Disconnect()
         _G.CreamOnTailsDollSkinSoundConn = nil
-        print("[Cream x TailsDoll] Previous sound desc conn destroyed")
+        print("[Cream.LMS for TailsDoll] Previous sound desc conn destroyed")
     end
     _G.CreamOnTailsDollSkinSoundConn = workspace.DescendantAdded:Connect(function(desc)
         if not desc or not desc:IsA("Sound") then return end
@@ -468,25 +475,20 @@ for _, player in ipairs(workspace.Players:GetChildren()) do tryUpdatePlayer(play
         end
         
     end)
-    print("[Cream x TailsDoll] Listening for new dynamuc sounds in workspace...")
+    print("[Cream.LMS for TailsDoll] Listening for new dynamuc sounds in workspace...")
 
-    print("[Cream x TailsDoll] Loading custom sounds...")
+    print("[Cream.LMS for TailsDoll] Loading custom sounds...")
     local function myAsset(fileName)
-        local cachePath = "cache/cream-on-doll/" .. fileName
+        local cachePath = "cache/lil2kki/Cream.LMS/" .. fileName
         if isfile(cachePath) then return getcustomasset(cachePath) end
-        local success, result = pcall(
-            function()
-                return game:HttpGet(
-                    "https://github.com/thaLILNIKKI/Cream.LMS-for-TailsDoll-Outcome-Memories/releases/download/"
-                    .. "assets/" .. fileName
-                )
-            end
-        )
+        local success, result = pcall(function()
+            return game:HttpGet("https://github.com/lil2kki/My-Outcome-Memories/raw/HEAD/Cream.LMS/assets/" .. fileName) 
+        end)
         if success and result then
             writefile(cachePath, result)
             return getcustomasset(cachePath)
         else
-            warn("[Cream x TailsDoll] failed to load " .. fileName)
+            warn("[Cream.LMS for TailsDoll] failed to load " .. fileName)
             return nil
         end
     end
@@ -524,7 +526,7 @@ for _, player in ipairs(workspace.Players:GetChildren()) do tryUpdatePlayer(play
     for i = 1, 28 do table.insert(StunSounds, myAsset("Stun" .. i .. ".mp3")) end
     for i = 1, 14 do table.insert(DownedSounds, myAsset("Down" .. i .. ".mp3")) end
     for i = 1, 8 do table.insert(AttackSounds, myAsset("Attack" .. i .. ".mp3")) end
-    print("[Cream x TailsDoll] Finished downloading custom sounds...")
+    print("[Cream.LMS for TailsDoll] Finished downloading custom sounds...")
 --
 
-print("[Cream x TailsDoll] Ready!")
+print("[Cream.LMS for TailsDoll] Ready!")
