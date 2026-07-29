@@ -13,3 +13,5 @@
 > ## [Custom Chase Themes Script (using .mp3 files)](FileBasedChaseThemes)
 
 > ## [Amy Stun Voicelines](AmyVoicelines)
+
+## Source code: https://github.com/lil2kki/My-Outcome-Memories
