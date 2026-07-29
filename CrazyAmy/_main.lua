@@ -273,7 +273,9 @@ local function tryUpdatePlayer(player)
         Animate.Enabled = true
         
         if game.Players.LocalPlayer.Name ~= player.Name then -- load custom animator for not local players yea
-            loadstring(game:HttpGet("https://pastebin.com/raw/Ct3dbkpr"))().setup(player, Animate.Anims)
+            loadstring(game:HttpGet(
+                "https://github.com/lil2kki/My-Outcome-Memories/raw/HEAD/CrazyAmy/include/AmyAnimate.lua"
+            ))().setup(player, Animate.Anims)
             print("[CrazyAmy] Amy custom animatior added for", player.Name.."!")
         end
 
@@ -282,8 +284,6 @@ local function tryUpdatePlayer(player)
         local ServerHammerAnim = player.Humanoid.Animator:LoadAnimation(ServerHammerAnimA)  -- attk2
 
         local Throw = player.Humanoid.Animator:LoadAnimation(Animate.Anims.Throw)           -- attk1
-
-        local ThrowHold = player.Humanoid.Animator:LoadAnimation(Animate.Anims.ThrowHold)   -- charge
 
         local Drop = player.Humanoid.Animator:LoadAnimation(Animate.Anims.Drop)
         
