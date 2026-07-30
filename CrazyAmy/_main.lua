@@ -535,7 +535,7 @@ themes.Default.TerrorRadius.PlaybackRegion = NumberRange.new(0, 0)
 themes.Default.TerrorRadius.LoopRegion = NumberRange.new(0, 0)
 themes.Default.TerrorRadius.PlaybackSpeed = 1
 
-themes.Default.NormalChase.SoundId = myAsset("NormalChase_alt.mp3")
+themes.Default.NormalChase.SoundId = myAsset("NormalChase.mp3") --_alt.mp3")
 themes.Default.NormalChase.PlaybackRegion = NumberRange.new(0, 0)
 themes.Default.NormalChase.LoopRegion = NumberRange.new(0, 0)
 
