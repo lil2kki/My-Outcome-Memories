@@ -8,15 +8,26 @@ OldAnimate:Destroy()
 
 CreamAnimate.Anims.Canon.Name = "Invis"
 
-CreamAnimate.Anims.Strangled:Clone().Parent = CreamAnimate.Anims.Invis
+CreamAnimate.Anims.Fall:Clone().Parent = CreamAnimate.Anims.Invis
+CreamAnimate.Anims.Invis.Fall.Name = "Run"-- rename clone
+
 CreamAnimate.Anims.Invis.Walk:Destroy()
-CreamAnimate.Anims.Invis.Strangled.Name = "Walk"
+CreamAnimate.Anims.Fall:Clone().Parent = CreamAnimate.Anims.Invis
+CreamAnimate.Anims.Invis.Fall.Name = "Walk"-- rename clone
+
+CreamAnimate.Anims.Invis.Idle:Destroy()
+CreamAnimate.Anims.HealLoop:Clone().Parent = CreamAnimate.Anims.Invis
+CreamAnimate.Anims.Invis.HealLoop.Name = "Idle"-- rename clone
+
 
 CreamAnimate.Anims.alt:Clone().Parent = CreamAnimate.Anims
 CreamAnimate.Anims.alt.Name = "Rage" -- rename clone
 
-CreamAnimate.Anims.Invis.Idle:Clone().Parent = CreamAnimate.Anims
-CreamAnimate.Anims.Idle.Name = "SelectPose" -- rename clone
+CreamAnimate.Anims.Default.Walk:Clone().Parent = CreamAnimate.Anims
+CreamAnimate.Anims.Walk.Name = "SelectPose" -- rename clone
+
+CreamAnimate.Anims.Summon:Clone().Parent = CreamAnimate.Anims
+CreamAnimate.Anims.Walk.Name = "TeleportAttack" -- rename clone
 
 -- storage model template
 local tar = game.ReplicatedStorage:FindFirstChild("Characters", true):FindFirstChild("2011x", true):FindFirstChild("Skins", true).Default
@@ -71,14 +82,67 @@ if model then -- setup modellll
         eyes.Material = Enum.Material.Neon
         eyes.Color = Color3.new(0, 0, 0)
     end
+    -- dress..
+    local dress = find("dress")
+    dress.Material = Enum.Material.Sandstone
     -- blood on muzzle :3
     local muzzle = find("muzzle")
     local drip = game:GetObjects("rbxassetid://84762690015926")[1]
     drip.Parent = muzzle
     drip.UVScale = Vector2.new(1.5, 1)
-    -- dress..
-    local dress = find("dress")
-    dress.Material = Enum.Material.Sandstone
+    drip.Color3 = Color3.new(163, 163, 163)
+    --- blooooddd all the mess
+    local function addDecal(parent, face, textureId, rotation, uvOffset, uvScale)
+        local decal = Instance.new("Decal")
+        decal.Face = face
+        decal.Texture = "rbxassetid://" .. textureId
+        decal.Rotation = rotation or 0
+        decal.UVOffset = uvOffset or Vector2.new(0, 0)
+        decal.UVScale = uvScale or Vector2.new(1, 1)
+        decal.Parent = parent
+        return decal
+    end
+    local function addDecalAllFaces(parent, textureId)
+    print(parent:GetFullName(), parent.ClassName)
+        addDecal(parent, Enum.NormalId.Front, textureId)--"107953383542820")
+        addDecal(parent, Enum.NormalId.Bottom, textureId)-- "107953383542820")
+        addDecal(parent, Enum.NormalId.Top, textureId)-- "107953383542820")
+        addDecal(parent, Enum.NormalId.Back, textureId)-- "107953383542820")
+        addDecal(parent, Enum.NormalId.Left, textureId)-- "107953383542820")
+        addDecal(parent, Enum.NormalId.Right, textureId)-- "107953383542820")
+    end
+    if find("Sphere.036") then addDecal(find("Sphere.036"), Enum.NormalId.Front, "107953383542820") end
+    addDecal(dress, Enum.NormalId.Front, "70687582477902")
+    addDecal(dress, Enum.NormalId.Left, "70687582477902")-- )
+    addDecal(dress, Enum.NormalId.Right, "70687582477902")-- "107953383542820")
+    --addDecalAllFaces(dress, "70687582477902")
+    if find("rs") then for _, v in ipairs(find("rs"):GetDescendants()) do
+        if v:IsA("BasePart") then addDecalAllFaces(v, "7276344647") end
+        if v:IsA("BasePart") then addDecalAllFaces(v, "107953383542820") end
+        if v:IsA("BasePart") and (math.random() < 0.3) then addDecalAllFaces(v, "1694131993") end
+    end end
+    if find("ls") then for _, v in ipairs(find("ls"):GetDescendants()) do
+        if v:IsA("BasePart") then addDecalAllFaces(v, "7276344647") end
+        if v:IsA("BasePart") then addDecalAllFaces(v, "107953383542820") end
+        if v:IsA("BasePart") and (math.random() < 0.3) then addDecalAllFaces(v, "1694131993") end
+    end end
+    if find("LEar2") then addDecalAllFaces(find("LEar2"), "7276344647") end
+    if find("REar2") then addDecalAllFaces(find("REar2"), "70687582477902") end
+    -- old cream
+    if find("head") then for _, v in ipairs(find("head"):GetDescendants()) do
+        if v:IsA("BasePart") then
+            if v.Name == ("Sphere.017") then 
+                addDecal(v, Enum.NormalId.Back, "9893625715")
+                addDecal(v, Enum.NormalId.Back, "14799161405")
+                addDecal(v, Enum.NormalId.Back, "1694131993")
+            end
+            if v.Name == ("Sphere.004") then 
+                addDecal(v, Enum.NormalId.Back, "9893625715") 
+                addDecal(v, Enum.NormalId.Back, "14799161405") 
+            end
+        end
+    end end
+        
 end
 
 -- Cream Icons
@@ -263,6 +327,7 @@ local function tryUpdatePlayer(player)
                         if not ov:GetAttribute("IgnoreTransparency") then
                             pcall(function() ov.Transparency = v.Transparency end)
                             if ov:IsA("ParticleEmitter") then ov.Enabled = (v.Transparency < 0.5) end
+                            if ov:IsA("Trail") then ov.Enabled = (v.Transparency < 0.5) end -- old cream
                         end
                     end
                 end
@@ -514,10 +579,7 @@ themes.Default.LastLifeChase.SoundId = myAsset("LastLifeChase_alt.mp3")
 themes.Default.LastLifeChase.PlaybackRegion = NumberRange.new(0, 0)
 themes.Default.LastLifeChase.LoopRegion = NumberRange.new(0, 0)
 themes.Default.LastLifeChase.PlaybackSpeed = 1 -- OM 0.1a special
-
-themes.Default.Rage.SoundId = myAsset("Rage.mp3")
-themes.Default.LastLifeChase.PlaybackRegion = NumberRange.new(0, 0)
-themes.Default.LastLifeChase.LoopRegion = NumberRange.new(0, 0)
+themes.Default.LastLifeChase:SetAttribute("Eliminated", nil) -- no time pos jump on kill pls
 
 _G.Cream2011xSkin_SoundIDs = {
     -- xd
