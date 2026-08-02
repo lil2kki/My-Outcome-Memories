@@ -6,4 +6,8 @@
 
 > ## [Amy's Maid and School Uniform for Cream](Amy-Uniforms-For-Cream)
 
+> ## [File Based Chase Themes](FileBasedChaseThemes)
+
+> ## [File Based Solo Themes](FileBasedSoloThemes)
+
 ## Source code: https://github.com/lil2kki/My-Outcome-Memories
