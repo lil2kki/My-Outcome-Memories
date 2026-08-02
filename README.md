@@ -10,4 +10,6 @@
 
 > ## [File Based Solo Themes](FileBasedSoloThemes)
 
+> ## [Rebind to mouse buttons for Cream with gun (private server NormalCream)](normal-cream-rebind)
+
 ## Source code: https://github.com/lil2kki/My-Outcome-Memories
