@@ -1,6 +1,8 @@
 ### Scripts by me for Outcome Memories here:
 
-> ## [Crazy Amy Skin](CrazyAmy)
+> ## [FeelsTheRabbit Skin For 2011x](FeelsTheRabbit)
+
+> ## [Crazy Amy Skin For Kolossos](CrazyAmy)
 
 > ## [Cream.LMS Themed Skins](Cream.LMS)
 
