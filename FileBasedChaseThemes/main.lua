@@ -23,6 +23,7 @@ local function tryReplaceThemessss()
             Song.PlaybackRegion = NumberRange.new(0, 0)
             Song.LoopRegion = NumberRange.new(0, 0)
             Song.PlaybackSpeed = 1 -- OM 0.1a special
+            Song:SetAttribute("Eliminated", nil) -- no time pos jump on kill pls
             warn("[FileBasedChaseThemes] Replaced", Song:GetFullName(), "by", file)
         end
     end
