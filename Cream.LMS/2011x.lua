@@ -27,7 +27,7 @@ CreamAnimate.Anims.Default.Walk:Clone().Parent = CreamAnimate.Anims
 CreamAnimate.Anims.Walk.Name = "SelectPose" -- rename clone
 
 CreamAnimate.Anims.Summon:Clone().Parent = CreamAnimate.Anims
-CreamAnimate.Anims.Walk.Name = "TeleportAttack" -- rename clone
+CreamAnimate.Anims.Summon.Name = "TeleportAttack" -- rename clone
 
 -- storage model template
 local tar = game.ReplicatedStorage:FindFirstChild("Characters", true):FindFirstChild("2011x", true):FindFirstChild("Skins", true).Default
@@ -103,7 +103,6 @@ if model then -- setup modellll
         return decal
     end
     local function addDecalAllFaces(parent, textureId)
-    print(parent:GetFullName(), parent.ClassName)
         addDecal(parent, Enum.NormalId.Front, textureId)--"107953383542820")
         addDecal(parent, Enum.NormalId.Bottom, textureId)-- "107953383542820")
         addDecal(parent, Enum.NormalId.Top, textureId)-- "107953383542820")
