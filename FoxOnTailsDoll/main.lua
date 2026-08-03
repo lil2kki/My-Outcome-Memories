@@ -18,6 +18,12 @@ game.ReplicatedStorage.ClientAssets.Characters.Survivors.Tails.scriptstuff.Anima
 .Parent = game.ReplicatedStorage.ClientAssets.Characters.EXE.TailsDoll.scriptstuff.Animate.Anims
 game.ReplicatedStorage.ClientAssets.Characters.EXE.TailsDoll.scriptstuff.Animate.Anims.Walk.Name = "SelectPose"
 
+for v1, v2 in game.ReplicatedStorage.ClientAssets.Characters.EXE.TailsDoll.Skins.Default:GetDescendants() do
+    if v2:IsA("BasePart") and table.find({ "Left Shoe", "Right Shoe" }, v2.Name) then
+        v2.Color = Color3.new(0.243137, 0.215686, 1)
+    end
+end
+
 local function tryUpdatePlayer(player)
     if not player:IsA("Model") then return end
     if player:GetAttribute("Character") ~= "TailsDoll" then return end
@@ -165,7 +171,7 @@ local function tryUpdatePlayer(player)
     end
 
     -- Overlay Model
-    local OverlayModel = game.ReplicatedStorage.ClientAssets.Characters.Survivors.Tails.Skins.Default:Clone()
+    local OverlayModel = game.ReplicatedStorage.ClientAssets.Characters.EXE.TailsDoll.Skins.Default:Clone()
     OverlayModel.Name = "OverlayModel"
     OverlayModel.Parent = player
 
