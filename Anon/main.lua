@@ -19,7 +19,7 @@ function onDescendantAdded(label)
     if not label:IsA("TextLabel") and not label:IsA("TextButton") then return end
     if not label.Parent then return end
     repl(label)
-    if not _G.OMAnon_WasExecuted then label:GetPropertyChangedSignal("Text"):Connect(function() repl(label) end) end
+    label:GetPropertyChangedSignal("Text"):Connect(function() repl(label) end)
 end
 
 for _, v in ipairs(game.Players.LocalPlayer.PlayerGui:GetDescendants()) do onDescendantAdded(v) end
@@ -27,11 +27,9 @@ game.Players.LocalPlayer.PlayerGui.DescendantAdded:Connect(onDescendantAdded)
 
 for _, v in ipairs(workspace.Lobby:GetDescendants()) do 
     if v.Name == "skibidi board" then 
-        if not _G.OMAnon_WasExecuted then v.DescendantAdded:Connect(repl) end
+        v.DescendantAdded:Connect(repl)
         for _, a in ipairs(v:GetDescendants()) do repl(a) end
     end
 end
-
-_G.OMAnon_WasExecuted = true
 
 print("[OMAnon] Working on all texts for you! ~")
