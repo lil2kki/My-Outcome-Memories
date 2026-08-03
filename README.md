@@ -4,6 +4,8 @@
 
 > ## [2011x New Soundtrack](2011x-New-Soundtrack)
 
+> ## [Fox On Tails Doll](FoxOnTailsDoll)
+
 > ## [FeelsTheRabbit Skin For 2011x](FeelsTheRabbit)
 
 > ## [Crazy Amy Skin For Kolossos](CrazyAmy)
