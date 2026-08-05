@@ -20,4 +20,6 @@
 
 > ## [Rebind to mouse buttons for Cream with gun (private server NormalCream)](normal-cream-rebind)
 
+> ## [Honey On Blaze](HoneyOnBlaze)
+
 ## Source code: [https://github.com/lil2kki/My-Outcome-Memories](https://github.com/lil2kki/My-Outcome-Memories)
