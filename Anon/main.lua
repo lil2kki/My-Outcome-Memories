@@ -3,7 +3,12 @@ _G.OMAnon_DisplayName  = _G.OMAnon_DisplayName or "LocalPlayer"
 
 print("[OMAnon] Now loading... Made by lil2kki <3")
 
-function filter(label)
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+local textConnections = {}
+
+local function filter(label)
     if not label:IsA("TextLabel") and not label:IsA("TextButton") then return false end
     if not label.Parent then return false end
     local path = label:GetFullName()
@@ -15,30 +20,42 @@ function filter(label)
     return false
 end
 
-function repl(label)
+local function repl(label)
     if not filter(label) then return end
     local text = label.Text
-    if string.find(text, game.Players.LocalPlayer.DisplayName) or string.find(text, game.Players.LocalPlayer.Name) then
+    if string.find(text, LocalPlayer.DisplayName) or string.find(text, LocalPlayer.Name) then
         if not string.find(label:GetFullName(), "skibidi board") then
             warn("OMAnon repl at ", label:GetFullName())
         end
-        text = text:gsub(game.Players.LocalPlayer.Name, _G.OMAnon_Name)
-        text = text:gsub(game.Players.LocalPlayer.DisplayName, _G.OMAnon_DisplayName)
+        text = text:gsub(LocalPlayer.Name, _G.OMAnon_Name)
+        text = text:gsub(LocalPlayer.DisplayName, _G.OMAnon_DisplayName)
         label.Text = text
     end
 end
 
-function onDescendantAdded(label)
-    if not filter(label) then return end
-    repl(label)
-    label:GetPropertyChangedSignal("Text"):Connect(function() repl(label) end)
+local function cleanupLabel(label)
+    local conn = textConnections[label]
+    if conn then
+        conn:Disconnect()
+        textConnections[label] = nil
+    end
 end
 
-for _, v in ipairs(game.Players.LocalPlayer.PlayerGui:GetDescendants()) do onDescendantAdded(v) end
-game.Players.LocalPlayer.PlayerGui.DescendantAdded:Connect(onDescendantAdded)
+local function onDescendantAdded(label)
+    if not filter(label) then return end
+    repl(label)
+    if textConnections[label] then textConnections[label]:Disconnect() end
+    textConnections[label] = label:GetPropertyChangedSignal("Text"):Connect(function() repl(label) end)
+    label.Destroying:Connect(function() cleanupLabel(label) end)
+end
 
-for _, v in ipairs(workspace.Lobby:GetDescendants()) do 
-    if v.Name == "skibidi board" then 
+for _, v in ipairs(LocalPlayer.PlayerGui:GetDescendants()) do
+    onDescendantAdded(v)
+end
+LocalPlayer.PlayerGui.DescendantAdded:Connect(onDescendantAdded)
+
+for _, v in ipairs(workspace.Lobby:GetDescendants()) do
+    if v.Name == "skibidi board" then
         v.DescendantAdded:Connect(repl)
         for _, a in ipairs(v:GetDescendants()) do repl(a) end
     end
