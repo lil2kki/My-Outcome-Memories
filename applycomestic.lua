@@ -8,7 +8,7 @@ function applycomestic(player, primaryModel)
 
     local EquippedCosmetics = {}
     for item in string.gmatch(player:GetAttribute("EquippedCosmetics"), "[^,]+") do
-        if player:FindFirstChild(item, true) then player[item]:Destroy() end
+        if player:FindFirstChild(item, true) then player:FindFirstChild(item, true):Destroy() end
         for a, Folder in pairs(ReplicatedStorage.ClientAssets.Cosmetics:GetChildren()) do
             if not Folder:FindFirstChild(item) then continue end
             EquippedCosmetics[Folder.Name] = item
@@ -30,10 +30,10 @@ function applycomestic(player, primaryModel)
     end
     
     local function RequireUnlockedModule(Module)
-        local UnlockedModule = Module.Parent:FindFirstChild(Module.Name .. "___unlocked")
+        local UnlockedModule = workspace:FindFirstChild(Module.Name .. "___unlocked")
         if not UnlockedModule then
             UnlockedModule = Module:Clone()
-            UnlockedModule.Parent = Module.Parent
+            UnlockedModule.Parent = workspace
             UnlockedModule.Name = Module.Name .. "___unlocked"
             print("UnlockModule", UnlockedModule:GetFullName())
         end
@@ -222,4 +222,4 @@ function applycomestic(player, primaryModel)
 
     warn("color", v3)
 end
-return applycomestic
+return applycomestic -- applycomestic(game.Players.LocalPlayer.Character,game.Players.LocalPlayer.Character.OverlayModel)
