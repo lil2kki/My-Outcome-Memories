@@ -17,6 +17,7 @@ local function filter(label)
     if path:find("FUNPanel.Frame.targ") then return true end
     if path:find(".Teamname") then return true end
     if path:find(".user") then return true end
+    if path:find(".selected") then return true end
     return false
 end
 
