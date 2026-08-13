@@ -12,17 +12,138 @@ game.ReplicatedStorage.ClientAssets.Characters.EXE.TailsDoll.scriptstuff.Animate
 game.ReplicatedStorage.ClientAssets.Characters.Survivors.Tails.scriptstuff.Animate:Clone()
 .Parent = game.ReplicatedStorage.ClientAssets.Characters.EXE.TailsDoll.scriptstuff
 
+game.ReplicatedStorage.ClientAssets.Characters.EXE.TailsDoll.scriptstuff.Animate.Anims.Canon.Walk:Clone()
+.Parent = game.ReplicatedStorage.ClientAssets.Characters.EXE.TailsDoll.scriptstuff.Animate.Anims.Canon
+game.ReplicatedStorage.ClientAssets.Characters.EXE.TailsDoll.scriptstuff.Animate.Anims.Canon.Walk.Name = "Run"
+
 while game.ReplicatedStorage.ClientAssets.Characters.EXE.TailsDoll.scriptstuff.Animate.Anims:FindFirstChild("SelectPose")
 do game.ReplicatedStorage.ClientAssets.Characters.EXE.TailsDoll.scriptstuff.Animate.Anims:FindFirstChild("SelectPose"):Destroy() end
 game.ReplicatedStorage.ClientAssets.Characters.Survivors.Tails.scriptstuff.Animate.Anims.Canon.Walk:Clone()
 .Parent = game.ReplicatedStorage.ClientAssets.Characters.EXE.TailsDoll.scriptstuff.Animate.Anims
 game.ReplicatedStorage.ClientAssets.Characters.EXE.TailsDoll.scriptstuff.Animate.Anims.Walk.Name = "SelectPose"
 
-for v1, v2 in game.ReplicatedStorage.ClientAssets.Characters.EXE.TailsDoll.Skins.Default:GetDescendants() do
+local model = game.ReplicatedStorage.ClientAssets.Characters.EXE.TailsDoll.Skins.Default
+
+local function find(name) return model:FindFirstChild(name, true) end
+
+--- blooooddd all the mess
+local function addDecal(parent, face, textureId, rotation, uvOffset, uvScale)
+    local decal = Instance.new("Decal")
+    decal.Face = face
+    decal.Texture = "rbxassetid://" .. textureId
+    decal.Rotation = rotation or 0
+    decal.UVOffset = uvOffset or Vector2.new(0, 0)
+    decal.UVScale = uvScale or Vector2.new(1, 1)
+    decal.Parent = parent
+    return decal
+end
+local function addDecalAllFaces(parent, textureId)
+    addDecal(parent, Enum.NormalId.Front, textureId)--"107953383542820")
+    addDecal(parent, Enum.NormalId.Bottom, textureId)-- "107953383542820")
+    addDecal(parent, Enum.NormalId.Top, textureId)-- "107953383542820")
+    addDecal(parent, Enum.NormalId.Back, textureId)-- "107953383542820")
+    addDecal(parent, Enum.NormalId.Left, textureId)-- "107953383542820")
+    addDecal(parent, Enum.NormalId.Right, textureId)-- "107953383542820")
+end
+for _, v in ipairs(find("canon"):GetDescendants()) do
+    if v.Name == "Union" then continue end -- black parts
+    if v:IsA("BasePart") then addDecalAllFaces(v, "7276344647") end
+    if v:IsA("BasePart") and (math.random() < 0.5) then addDecalAllFaces(v, "1694131993") end
+end
+for _, v in ipairs(find("Arm 1"):GetDescendants()) do
+    if v:IsA("BasePart") then addDecalAllFaces(v, "7276344647") end
+    if v:IsA("BasePart") and (math.random() < 0.5) then addDecalAllFaces(v, "1694131993") end
+end
+addDecal(model.Body, Enum.NormalId.Right, 10833044827)
+addDecal(model.Body, Enum.NormalId.Right, 1694131993, 0, Vector2.new(0.1, 0.25))
+addDecal(model.Body, Enum.NormalId.Top, 1694131993, 0,  Vector2.new(0.3, 0.1))
+addDecal(model.bellyfur, Enum.NormalId.Right, 70687582477902)
+addDecal(model.bellyfur, Enum.NormalId.Front, 14799183802, 0, Vector2.new(0.6, 0), Vector2.new(2, 0.7))
+addDecal(model.bellyfur, Enum.NormalId.Bottom, 70687582477902)
+addDecal(model.muzzle, Enum.NormalId.Front, 70687582477902)
+addDecal(model.muzzle, Enum.NormalId.Right, 70687582477902)
+
+-- details
+
+for v1, v2 in model:GetDescendants() do
     if v2:IsA("BasePart") and table.find({ "Left Shoe", "Right Shoe" }, v2.Name) then
         v2.Color = Color3.new(0.243137, 0.215686, 1)
     end
+    if v2:IsA("BasePart") and (v2.Material == Enum.Material.Plastic or v2.Material == Enum.Material.SmoothPlastic) then 
+        --v2.Material = Enum.Material.Concrete
+    end
 end
+
+for _, v in ipairs(model.Head:GetChildren()) do
+    if v:IsA("BasePart") and v.Name == "MAD_HEAD" then 
+        v.Transparency = 0
+        v.Name = v.Name.."_PART"
+    end
+    if v:IsA("BasePart") and v.Name == "SAD_HEAD" then v.Name = v.Name.."_PART" end
+end
+
+
+-- custom animmmm
+local function playSwing(model)
+	local body = model:FindFirstChild("Body", true)
+	local waist = model:FindFirstChild("waist", true)
+	if not body or not waist then return end
+
+	local rArm = body:FindFirstChild("Cylinder.010", true)
+	local lArm = body:FindFirstChild("Left Arm", true)
+	local head = body:FindFirstChild("Head", true)
+	local torso = waist:FindFirstChild("Body", true)
+	if not rArm or not lArm or not head or not torso then return end
+
+    if model:GetAttribute("playSwing") then return end
+    model:SetAttribute("playSwing", true)
+
+	-- base C0 positionsss (originals have identity rotation)
+	local rb = CFrame.new(0.3922, 0.5312, 0.1235)
+	local lb = CFrame.new(-0.4071, 0.5312, 0.1235)
+	local hb = CFrame.new(0, 0.8754, 0.1455)
+	local wb = CFrame.new(0.0003, 0.0453, -0.0847)
+
+	-- rest pose
+	local oR, oL, oH, oW = rArm.C0, lArm.C0, head.C0, torso.C0
+
+    local rad = math.rad
+    local Ang = CFrame.Angles
+	local kfs = {
+		-- windup
+		{0.06, rb*Ang(rad(-130),rad(-25),rad(15)), lb*Ang(rad(40),rad(-15),0), hb*Ang(rad(-10),rad(-20),0), wb*Ang(0,rad(-15),0)},
+		-- strike
+		{0.05, rb*Ang(rad(20),rad(50),rad(-15)), lb*Ang(rad(-10),rad(35),0), hb*Ang(rad(5),rad(20),0), wb*Ang(0,rad(25),0)},
+		-- impact
+		{0.04, rb*Ang(rad(55),rad(70),rad(-25)), lb*Ang(rad(-30),rad(50),0), hb*Ang(rad(10),rad(30),0), wb*Ang(0,rad(35),0)},
+		-- follow through
+		{0.06, rb*Ang(rad(85),rad(90),rad(-35)), lb*Ang(rad(-45),rad(55),0), hb*Ang(rad(15),rad(35),0), wb*Ang(0,rad(40),0)},
+		-- recovery
+		{0.12, oR, oL, oH, oW},
+	}
+
+	local cur = {rArm.C0, lArm.C0, head.C0, torso.C0}
+
+	for _, kf in ipairs(kfs) do
+		local dur, tR, tL, tH, tW = kf[1], kf[2], kf[3], kf[4], kf[5]
+		local steps = math.max(1, math.floor(dur / 0.015))
+		local st = dur / steps
+		for i = 1, steps do
+			local a = i / steps
+			rArm.C0 = cur[1]:Lerp(tR, a)
+			lArm.C0 = cur[2]:Lerp(tL, a)
+			head.C0 = cur[3]:Lerp(tH, a)
+			torso.C0 = cur[4]:Lerp(tW, a)
+			task.wait(st)
+		end
+		rArm.C0, lArm.C0, head.C0, torso.C0 = tR, tL, tH, tW
+		cur = {tR, tL, tH, tW}
+	end
+
+    model:SetAttribute("playSwing", nil)
+end
+
+-- player upd
 
 local function tryUpdatePlayer(player)
     if not player:IsA("Model") then return end
@@ -46,7 +167,7 @@ local function tryUpdatePlayer(player)
     
     if player:WaitForChild("Animate") and player:WaitForChild("Humanoid") then
     
-        local Animate = game.ReplicatedStorage.ClientAssets.Characters.Survivors.Tails.scriptstuff.Animate:Clone()
+        local Animate = game.ReplicatedStorage.ClientAssets.Characters.EXE.TailsDoll.scriptstuff.Animate:Clone()
         Animate.Name = "Tails"..Animate.Name
         Animate.Parent = player
         Animate.Enabled = true
@@ -65,7 +186,7 @@ local function tryUpdatePlayer(player)
 
         local ServerBrustHit = loadTrack("rbxassetid://75852355428865")
 
-        local ServerBrustHitForReachout = loadTrack("rbxassetid://75852355428865")
+        local ForReachout = loadTrack("rbxassetid://75852355428865")
         
         local Strangled = player.Humanoid.Animator:LoadAnimation(Animate.Anims.Strangled)
         local StrangledR = player.Humanoid.Animator:LoadAnimation(Animate.Anims.StrangledR)
@@ -78,7 +199,7 @@ local function tryUpdatePlayer(player)
         local Cory = loadTrack("rbxassetid://118810363050448")
 
         player.Humanoid.Animator.AnimationPlayed:Connect(function(track)
-            --print("PLAYED: "..track.Name.." - "..track.Animation.AnimationId)
+            --            print("PLAYED: "..track.Name.." - "..track.Animation.AnimationId)
             local id = track.Animation.AnimationId
             if id == "rbxassetid://92259033776440" then playWhileTrack(track, SitTails) end
             if id == "rbxassetid://112656139256072" then playWhileTrack(track, Cory) end
@@ -104,24 +225,54 @@ local function tryUpdatePlayer(player)
                 end)
             end
             if id == "rbxassetid://138468646867674" or id == "rbxassetid://101931899083669" then -- swings
-                ServerBrustHit:Play(0.1)
-                ServerBrustHit:AdjustSpeed(2)
+                if math.random() < 0.2 then
+                    ServerBrustHit:Play(0.1)
+                    ServerBrustHit:AdjustSpeed(2)
+                else 
+                    playSwing(player)
+                    player:FindFirstChild("MAD_HEAD_PART", true).Transparency = 0
+                    return 
+                end -- keep MAD_HEAD_PART
             end
             if id == "rbxassetid://107665101569245" then -- kill
                 Strangled:Play(0.1)
-                Strangled:AdjustSpeed(0.25)
+                Strangled:AdjustSpeed(0.1)
                 track.Stopped:Once(function() Strangled:Stop(0.1) end)
+                return -- keep MAD_HEAD_PART
             end
             if id == "rbxassetid://85130598698132" then -- reachout step1
                 --huh
-                ServerBrustHitForReachout:Play(0.1)
+                ForReachout:Play(0.1)
                 task.wait(1)
-                ServerBrustHitForReachout:AdjustSpeed(0)
+                ForReachout:AdjustSpeed(0)
             end
             if id == "rbxassetid://87184553255122" then -- reachout step2
-                track.Stopped:Once(function() ServerBrustHitForReachout:Stop(0.1) end)
+                track.Stopped:Once(function() ForReachout:Stop(0.1) end)
                 task.wait(0.5)
-                if not track.IsPlaying then ServerBrustHitForReachout:Stop(0.1) end
+                if not track.IsPlaying then ForReachout:Stop(0.1) end
+            end
+            if track.Name == "Walk" or track.Name == "Run" then ForReachout:Stop(0.1) end
+            if track.Name == "Animation" then
+                -- try to sync server anims
+                if game.Players.LocalPlayer.Name ~= player.Name then
+                    for _, Anim in ipairs(player.Animate.Anims:GetDescendants()) do
+                        if not Anim:IsA("Animation") then continue end
+                        if id ~= Anim.AnimationId then continue end
+                        print("^ Thats", Anim:GetFullName())
+                        local MyAnim = Animate:FindFirstChild(Anim.Parent.Name, true):FindFirstChild(Anim.Name)
+                        local TempTrack = player.Humanoid.Animator:LoadAnimation(MyAnim)
+                        TempTrack:Play(0.1)
+                        TempTrack:AdjustSpeed(track.Speed)
+                        track.Stopped:Once(function() TempTrack:Stop(0.1) end)
+                        return
+                    end
+                end
+                -- handle MAD_HEAD_PART Transparency
+                track.Stopped:Once(function()
+                task.wait(0.1)
+                player:FindFirstChild("MAD_HEAD_PART", true).Transparency = 0
+                end)
+                player:FindFirstChild("MAD_HEAD_PART", true).Transparency = 1
             end
         end)
 
@@ -178,6 +329,20 @@ local function tryUpdatePlayer(player)
     local myHRP = OverlayModel:FindFirstChild("HumanoidRootPart", true)
     if not myHRP then OverlayModel:Destroy() return end
 
+    local function weld(part0, part1)
+        part1:PivotTo(part0.CFrame)
+        local c0 = part0.CFrame:ToObjectSpace(part1.CFrame)
+        local w = Instance.new("Weld")
+        w.Name = part1.Name
+        w.Part0 = part0
+        w.Part1 = part1
+        w.C0 = c0
+        w.Parent = part0
+    end
+    local Watch = game.ReplicatedStorage.ClientAssets.Cosmetics.Accessories.Watch:Clone()
+    Watch.Parent = OverlayModel
+    weld(OverlayModel:FindFirstChild(Watch:GetAttribute("WeldTo"), true), Watch.Weld)
+
     for _, v in ipairs(OverlayModel:GetDescendants()) do
         if v:IsA("Humanoid") then v:Destroy() end
         if v:IsA("Animator") then v:Destroy() end
@@ -211,6 +376,7 @@ local function tryUpdatePlayer(player)
         -- print(desc.ClassName, desc:GetFullName())
 
         if desc.Name == "Rolling" then desc:Destroy() end -- NO ROLL VELOC
+        if desc.ClassName == "Decal" then desc:Destroy() end -- no decals
         if desc.ClassName == "Attachment" then desc.Parent = OverlayModel.canon.Cylinder end
         if desc.ClassName == "ParticleEmitter" then desc.Parent = OverlayModel.canon.Cylinder end
 
@@ -218,7 +384,7 @@ local function tryUpdatePlayer(player)
         if not desc.Parent or not desc.Parent.Parent then return end
         if desc:GetAttribute("IsMyCloneToIgnore") then return end
 
-        print(desc.ClassName, desc:GetFullName())
+        --print(desc.ClassName, desc:GetFullName())
 
         local path = desc:GetFullName()
         
