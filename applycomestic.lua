@@ -1,5 +1,9 @@
 -- local applycomestic = loadstring(game:HttpGet("https://github.com/lil2kki/My-Outcome-Memories/raw/HEAD/applycomestic.lua"))()
 -- applycomestic(player, player.OverlayModel)
+
+if not UnlockModule then function UnlockModule(a) return require(a) end end
+if not LockModulke then function LockModulke(a) return require(a) end end
+
 function applycomestic(player, primaryModel)
 
     print("[module by lil2kki] called applycomestic for", player:GetFullName())
