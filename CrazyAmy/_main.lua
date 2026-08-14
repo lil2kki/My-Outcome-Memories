@@ -1,5 +1,8 @@
 print("[CrazyAmy] Now loading... Made by lil2kki <3")
 
+if not UnlockModule then function UnlockModule(a) return require(a) end end
+if not LockModulke then function LockModulke(a) return require(a) end end
+
 -- storage animator set
 local OldAnimate = game.ReplicatedStorage:FindFirstChild("Characters", true):FindFirstChild("Kolossos", true):FindFirstChild("Animate", true)
 local AmyAnimate = game.ReplicatedStorage:FindFirstChild("Characters", true):FindFirstChild("Amy", true):FindFirstChild("Animate", true):Clone()
@@ -8,9 +11,6 @@ OldAnimate:Destroy()
 
 AmyAnimate.Anims.alt.Walk:Clone().Parent = AmyAnimate.Anims
 AmyAnimate.Anims.Walk.Name = "SelectPose" -- rename clone
-
-AmyAnimate.Anims.alt.Idle:Clone().Parent = AmyAnimate.Anims
-AmyAnimate.Anims.Idle.Name = "Sit" -- rename clone
 
 -- storage model template
 local tar = game.ReplicatedStorage:FindFirstChild("Characters", true):FindFirstChild("Kolossos", true):FindFirstChild("Skins", true).Default
@@ -36,6 +36,7 @@ if model then -- setup modellll
     local function applySimpleCosmetic(Cosmetic)
         UnlockModule(Cosmetic.Unique)
         require(Cosmetic.Unique).load(model)
+        LockModulke(Cosmetic.Unique)
         local target = model:FindFirstChild(Cosmetic:GetAttribute("WeldTo"), true)
         local weldPart = Cosmetic:FindFirstChild("Weld")
         weld(target, weldPart)
@@ -44,6 +45,7 @@ if model then -- setup modellll
     local function applyComplexCosmetic(Cosmetic)
         UnlockModule(Cosmetic.Unique)
         require(Cosmetic.Unique).load(model)
+        LockModulke(Cosmetic.Unique)
         for _, child in ipairs(Cosmetic:GetChildren()) do
             if not child:IsA("Model") then continue end
             local weldToName = child:GetAttribute("WeldTo")
