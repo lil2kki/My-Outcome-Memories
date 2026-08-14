@@ -1,30 +1,34 @@
 print("[FoxOnTailsDoll] Now loading... Made by lil2kki <3")
 
 game.ReplicatedStorage.ClientAssets.Sounds.mus.Game.Round.ChaseThemes.TailsDoll.Default.NormalChase:Destroy()
-game.ReplicatedStorage.ClientAssets.Sounds.mus.Game.Round.ChaseThemes["2011x"].FeelstheRabbit.NormalChase:Clone()
-.Parent = game.ReplicatedStorage.ClientAssets.Sounds.mus.Game.Round.ChaseThemes.TailsDoll.Default
+game.ReplicatedStorage.ClientAssets.Sounds.mus.Game.Round.ChaseThemes["2011x"].FeelstheRabbit.NormalChase:Clone().Parent = 
+game.ReplicatedStorage.ClientAssets.Sounds.mus.Game.Round.ChaseThemes.TailsDoll.Default
 
 game.ReplicatedStorage.ClientAssets.Characters.EXE.TailsDoll.Skins.Default:Destroy()
-game.ReplicatedStorage.ClientAssets.Characters.Survivors.Tails.Skins.Default:Clone()
-.Parent = game.ReplicatedStorage.ClientAssets.Characters.EXE.TailsDoll.Skins
+game.ReplicatedStorage.ClientAssets.Characters.Survivors.Tails.Skins.Default:Clone().Parent = 
+game.ReplicatedStorage.ClientAssets.Characters.EXE.TailsDoll.Skins
 
 game.ReplicatedStorage.ClientAssets.Characters.EXE.TailsDoll.scriptstuff.Animate:Destroy()
-game.ReplicatedStorage.ClientAssets.Characters.Survivors.Tails.scriptstuff.Animate:Clone()
-.Parent = game.ReplicatedStorage.ClientAssets.Characters.EXE.TailsDoll.scriptstuff
+game.ReplicatedStorage.ClientAssets.Characters.Survivors.Tails.scriptstuff.Animate:Clone().Parent = 
+game.ReplicatedStorage.ClientAssets.Characters.EXE.TailsDoll.scriptstuff
 
-game.ReplicatedStorage.ClientAssets.Characters.EXE.TailsDoll.scriptstuff.Animate.Anims.Canon.Walk:Clone()
-.Parent = game.ReplicatedStorage.ClientAssets.Characters.EXE.TailsDoll.scriptstuff.Animate.Anims.Canon
+game.ReplicatedStorage.ClientAssets.Characters.EXE.TailsDoll.scriptstuff.Animate.Anims.Canon.Walk:Clone().Parent = 
+game.ReplicatedStorage.ClientAssets.Characters.EXE.TailsDoll.scriptstuff.Animate.Anims.Canon
 game.ReplicatedStorage.ClientAssets.Characters.EXE.TailsDoll.scriptstuff.Animate.Anims.Canon.Walk.Name = "Run"
 
 while game.ReplicatedStorage.ClientAssets.Characters.EXE.TailsDoll.scriptstuff.Animate.Anims:FindFirstChild("SelectPose")
 do game.ReplicatedStorage.ClientAssets.Characters.EXE.TailsDoll.scriptstuff.Animate.Anims:FindFirstChild("SelectPose"):Destroy() end
-game.ReplicatedStorage.ClientAssets.Characters.Survivors.Tails.scriptstuff.Animate.Anims.Canon.Walk:Clone()
-.Parent = game.ReplicatedStorage.ClientAssets.Characters.EXE.TailsDoll.scriptstuff.Animate.Anims
+game.ReplicatedStorage.ClientAssets.Characters.Survivors.Tails.scriptstuff.Animate.Anims.Canon.Walk:Clone().Parent = 
+game.ReplicatedStorage.ClientAssets.Characters.EXE.TailsDoll.scriptstuff.Animate.Anims
 game.ReplicatedStorage.ClientAssets.Characters.EXE.TailsDoll.scriptstuff.Animate.Anims.Walk.Name = "SelectPose"
+
+game.ReplicatedStorage.ClientAssets.WinScreens.TailsDoll.WinAnim.AnimationId = "rbxassetid://92259033776440" -- tails sit
 
 local model = game.ReplicatedStorage.ClientAssets.Characters.EXE.TailsDoll.Skins.Default
 
 local function find(name) return model:FindFirstChild(name, true) end
+
+while find("Tails") do find("Tails").Name = "bruh. ability input script brokes so i had to rename it" end
 
 --- blooooddd all the mess
 local function addDecal(parent, face, textureId, rotation, uvOffset, uvScale)
@@ -156,14 +160,6 @@ local function tryUpdatePlayer(player)
         warn("[FoxOnTailsDoll] Player already have OverlayModel, update cancelled")
         return
     end
-
-    -- sometimes game spam errors without it lol
-    if not player:FindFirstChild("BeingChased") then
-        local BeingChased = Instance.new("ObjectValue")
-        BeingChased.Name = "BeingChased"
-        BeingChased.Value = player
-        BeingChased.Parent = player
-    end
     
     if player:WaitForChild("Animate") and player:WaitForChild("Humanoid") then
     
@@ -193,6 +189,7 @@ local function tryUpdatePlayer(player)
         local CanonIdle = player.Humanoid.Animator:LoadAnimation(Animate.Anims.Canon.Idle)
         local Glide = player.Humanoid.Animator:LoadAnimation(Animate.Anims.Glide)
         local Jump = player.Humanoid.Animator:LoadAnimation(Animate.Anims.Jump)
+        local Revive = player.Humanoid.Animator:LoadAnimation(Animate.Anims.Revive)
 
         local SitTails = loadTrack("rbxassetid://132926716277265")
         local Pipebomb = loadTrack("rbxassetid://137946742808216")
@@ -200,6 +197,7 @@ local function tryUpdatePlayer(player)
 
         player.Humanoid.Animator.AnimationPlayed:Connect(function(track)
             --            print("PLAYED: "..track.Name.." - "..track.Animation.AnimationId)
+            player.cam.lock.Value = player.OverlayModel.Body
             local id = track.Animation.AnimationId
             if id == "rbxassetid://92259033776440" then playWhileTrack(track, SitTails) end
             if id == "rbxassetid://112656139256072" then playWhileTrack(track, Cory) end
@@ -208,7 +206,7 @@ local function tryUpdatePlayer(player)
                 Jump:Play(0.1)
                 Jump:AdjustSpeed(2)
             end
-            if track.Name == "Glide" and Glide.Animation.AnimationId ~= track.Animation.AnimationId then -- Glide
+            if (track.Name == "Glide" or id == player.Glide.ANIMS.Glide.AnimationId) and Glide.Animation.AnimationId ~= track.Animation.AnimationId then -- Glide
                 local Flying = game.ReplicatedStorage.ClientAssets.Sounds.sfx.Game.Survivors.Tails.Flying:Clone()
                 Flying.Parent = player.HumanoidRootPart
                 Flying:Play()
@@ -228,6 +226,7 @@ local function tryUpdatePlayer(player)
                 if math.random() < 0.2 then
                     ServerBrustHit:Play(0.1)
                     ServerBrustHit:AdjustSpeed(2)
+                --elseif math.random() > 0.3 then
                 else 
                     playSwing(player)
                     player:FindFirstChild("MAD_HEAD_PART", true).Transparency = 0
@@ -356,9 +355,11 @@ local function tryUpdatePlayer(player)
         end
     end
 
+    pcall(function()
     player:FindFirstChild("DiamondPOS", true).Parent = OverlayModel.canon.Cylinder
     player:FindFirstChild("ReachOutVFXA", true).Parent = OverlayModel.canon.Cylinder
     player:FindFirstChild("RootAttachment", true).Parent = OverlayModel.canon.Cylinder
+    end)
 
     -- yooo (im stupidoo)
     local hrpY = -1.4
