@@ -74,8 +74,6 @@ model:SetAttribute("EquippedCosmetics", "BlueShoes,Watch,")
 model:SetAttribute("Character", "Tails")
 applycomestic(model)
 
-if find("hair") then find("hair").Transparency = 1 end
-
 -- custom animmmm
 local function playSwing(model)
 	local body = model:FindFirstChild("Body", true)
