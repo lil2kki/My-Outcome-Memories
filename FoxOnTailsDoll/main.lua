@@ -1,9 +1,5 @@
 print("[FoxOnTailsDoll] Now loading... Made by lil2kki <3")
 
-game.ReplicatedStorage.ClientAssets.Sounds.mus.Game.Round.ChaseThemes.TailsDoll.Default.NormalChase:Destroy()
-game.ReplicatedStorage.ClientAssets.Sounds.mus.Game.Round.ChaseThemes["2011x"].FeelstheRabbit.NormalChase:Clone().Parent = 
-game.ReplicatedStorage.ClientAssets.Sounds.mus.Game.Round.ChaseThemes.TailsDoll.Default
-
 game.ReplicatedStorage.ClientAssets.Characters.EXE.TailsDoll.Skins.Default:Destroy()
 game.ReplicatedStorage.ClientAssets.Characters.Survivors.Tails.Skins.Default:Clone().Parent = 
 game.ReplicatedStorage.ClientAssets.Characters.EXE.TailsDoll.Skins
@@ -68,24 +64,17 @@ addDecal(model.muzzle, Enum.NormalId.Front, 70687582477902)
 addDecal(model.muzzle, Enum.NormalId.Right, 70687582477902)
 
 -- details
-
-for v1, v2 in model:GetDescendants() do
-    if v2:IsA("BasePart") and table.find({ "Left Shoe", "Right Shoe" }, v2.Name) then
-        v2.Color = Color3.new(0.243137, 0.215686, 1)
-    end
-    if v2:IsA("BasePart") and (v2.Material == Enum.Material.Plastic or v2.Material == Enum.Material.SmoothPlastic) then 
-        --v2.Material = Enum.Material.Concrete
-    end
-end
-
 for _, v in ipairs(model.Head:GetChildren()) do
-    if v:IsA("BasePart") and v.Name == "MAD_HEAD" then 
-        v.Transparency = 0
-        v.Name = v.Name.."_PART"
-    end
+    if v:IsA("BasePart") and v.Name == "MAD_HEAD" then v.Name = v.Name.."_PART" v.Transparency = 0 end
     if v:IsA("BasePart") and v.Name == "SAD_HEAD" then v.Name = v.Name.."_PART" end
 end
 
+local applycomestic = loadstring(game:HttpGet("https://github.com/lil2kki/My-Outcome-Memories/raw/HEAD/applycomestic.lua"))()
+model:SetAttribute("EquippedCosmetics", "BlueShoes,Watch,")
+model:SetAttribute("Character", "Tails")
+applycomestic(model)
+
+if find("hair") then find("hair").Transparency = 1 end
 
 -- custom animmmm
 local function playSwing(model)
@@ -197,7 +186,6 @@ local function tryUpdatePlayer(player)
 
         player.Humanoid.Animator.AnimationPlayed:Connect(function(track)
             --            print("PLAYED: "..track.Name.." - "..track.Animation.AnimationId)
-            player.cam.lock.Value = player.OverlayModel.Body
             local id = track.Animation.AnimationId
             if id == "rbxassetid://92259033776440" then playWhileTrack(track, SitTails) end
             if id == "rbxassetid://112656139256072" then playWhileTrack(track, Cory) end
@@ -211,6 +199,7 @@ local function tryUpdatePlayer(player)
                 Flying.Parent = player.HumanoidRootPart
                 Flying:Play()
                 Glide:Play(0.1)
+                Glide:AdjustSpeed(1.5)
                 track.Stopped:Once(function() 
                     Glide:Stop(1)
                     Flying.PlaybackSpeed = 0.75
@@ -257,7 +246,7 @@ local function tryUpdatePlayer(player)
                     for _, Anim in ipairs(player.Animate.Anims:GetDescendants()) do
                         if not Anim:IsA("Animation") then continue end
                         if id ~= Anim.AnimationId then continue end
-                        print("^ Thats", Anim:GetFullName())
+                        -- print("^ Thats", Anim:GetFullName())
                         local MyAnim = Animate:FindFirstChild(Anim.Parent.Name, true):FindFirstChild(Anim.Name)
                         local TempTrack = player.Humanoid.Animator:LoadAnimation(MyAnim)
                         TempTrack:Play(0.1)
@@ -268,17 +257,24 @@ local function tryUpdatePlayer(player)
                 end
                 -- handle MAD_HEAD_PART Transparency
                 track.Stopped:Once(function()
-                task.wait(0.1)
-                player:FindFirstChild("MAD_HEAD_PART", true).Transparency = 0
+                    task.wait(0.1)
+                    player:FindFirstChild("MAD_HEAD_PART", true).Transparency = 0
                 end)
                 player:FindFirstChild("MAD_HEAD_PART", true).Transparency = 1
             end
         end)
 
+        local StrangledR = player.Humanoid.Animator:LoadAnimation(Animate.Anims.StrangledR)
         player.AttributeChanged:Connect(function(attr)
             if attr == "StunDur" or attr == "BurnDur" then
                 local val = player:GetAttribute(attr)
                 if val and val > 0 then
+                	if player:GetAttribute("State") == "default" then task.spawn(function()
+                        StrangledR:Play(0.1)
+                        StrangledR:AdjustSpeed(1.51)
+                        task.wait(0.9)
+                        StrangledR:Stop(0.3)
+                	end) end
                     player:SetAttribute("State", "alt")
                 elseif not val or val <= 0 then
                     player:SetAttribute("State", "default")
@@ -328,20 +324,6 @@ local function tryUpdatePlayer(player)
     local myHRP = OverlayModel:FindFirstChild("HumanoidRootPart", true)
     if not myHRP then OverlayModel:Destroy() return end
 
-    local function weld(part0, part1)
-        part1:PivotTo(part0.CFrame)
-        local c0 = part0.CFrame:ToObjectSpace(part1.CFrame)
-        local w = Instance.new("Weld")
-        w.Name = part1.Name
-        w.Part0 = part0
-        w.Part1 = part1
-        w.C0 = c0
-        w.Parent = part0
-    end
-    local Watch = game.ReplicatedStorage.ClientAssets.Cosmetics.Accessories.Watch:Clone()
-    Watch.Parent = OverlayModel
-    weld(OverlayModel:FindFirstChild(Watch:GetAttribute("WeldTo"), true), Watch.Weld)
-
     for _, v in ipairs(OverlayModel:GetDescendants()) do
         if v:IsA("Humanoid") then v:Destroy() end
         if v:IsA("Animator") then v:Destroy() end
@@ -355,12 +337,6 @@ local function tryUpdatePlayer(player)
         end
     end
 
-    pcall(function()
-    player:FindFirstChild("DiamondPOS", true).Parent = OverlayModel.canon.Cylinder
-    player:FindFirstChild("ReachOutVFXA", true).Parent = OverlayModel.canon.Cylinder
-    player:FindFirstChild("RootAttachment", true).Parent = OverlayModel.canon.Cylinder
-    end)
-
     -- yooo (im stupidoo)
     local hrpY = -1.4
     local weld = Instance.new("Weld")
@@ -370,6 +346,16 @@ local function tryUpdatePlayer(player)
     weld.C1 = CFrame.new(0, -hrpY, 0) 
     weld.Parent = myHRP
     myHRP:PivotTo(ogHRP.CFrame * CFrame.new(0, hrpY, 0))
+
+    pcall(function()
+    	-- retarget camera
+        player.Waist.MainBody.Part0 = OverlayModel.waist
+        player.MainBody.Head.Part0 = OverlayModel.Head
+    	-- effects pos
+        player:FindFirstChild("DiamondPOS", true).Parent = OverlayModel.canon.Cylinder
+        player:FindFirstChild("ReachOutVFXA", true).Parent = OverlayModel.canon.Cylinder
+        player:FindFirstChild("RootAttachment", true).Parent = OverlayModel.canon.Cylinder
+    end)
 
     -- sounds and stuff...
     player.DescendantAdded:Connect(function(desc)
@@ -430,19 +416,20 @@ local function tryUpdatePlayer(player)
         if path:find(".Downed") or (path:find(".Default") and path:find("Line")) then
             if desc.Parent:FindFirstChild("CustomSpeech") then desc:Destroy() return end
             local Sounds = {
-                game.ReplicatedStorage.ClientAssets.Sounds.sfx.Game.Survivors.Tails.Lines.ChargeLine,-- stand by
-                game.ReplicatedStorage.ClientAssets.Sounds.sfx.Game.Survivors.Tails.Lines.BurstLine1,--:Play() -- get out of here
-                game.ReplicatedStorage.ClientAssets.Sounds.sfx.Game.Survivors.Tails.Lines.BurstLine1,--:Play() -- get out of here
-                game.ReplicatedStorage.ClientAssets.Sounds.sfx.Game.Survivors.Tails.Lines.BurstLine2,--:Play() -- back off
-                game.ReplicatedStorage.ClientAssets.Sounds.sfx.Game.Survivors.Tails.Lines.ChargeLine,-- stand by
-                game.ReplicatedStorage.ClientAssets.Sounds.sfx.Game.Survivors.Tails.Lines.BurstLine4,-- move!
-                game.ReplicatedStorage.ClientAssets.Sounds.sfx.Game.Survivors.Tails.Lines.BurstLine1,--:Play() -- get out of here
-                game.ReplicatedStorage.ClientAssets.Sounds.sfx.Game.Survivors.Tails.Lines.BurstLine5,-- burn
-                game.ReplicatedStorage.ClientAssets.Sounds.sfx.Game.Survivors.Tails.Lines.ChargeLine,-- stand by
-                game.ReplicatedStorage.ClientAssets.Sounds.sfx.Game.Survivors.Tails.Lines.ChargeLine,-- stand by
+                game.ReplicatedStorage.ClientAssets.Sounds.sfx.Game.Survivors.Tails.Lines.ChargeLine, -- stand by
+                game.ReplicatedStorage.ClientAssets.Sounds.sfx.Game.Survivors.Tails.Lines.BurstLine1, --:Play() -- get out of here
+                game.ReplicatedStorage.ClientAssets.Sounds.sfx.Game.Survivors.Tails.Lines.BurstLine1, --:Play() -- get out of here
+                game.ReplicatedStorage.ClientAssets.Sounds.sfx.Game.Survivors.Tails.Lines.BurstLine2, --:Play() -- back off
+                game.ReplicatedStorage.ClientAssets.Sounds.sfx.Game.Survivors.Tails.Lines.ChargeLine, -- stand by
+                game.ReplicatedStorage.ClientAssets.Sounds.sfx.Game.Survivors.Tails.Lines.BurstLine4, -- move!
+                game.ReplicatedStorage.ClientAssets.Sounds.sfx.Game.Survivors.Tails.Lines.BurstLine1, --:Play() -- get out of here
+                game.ReplicatedStorage.ClientAssets.Sounds.sfx.Game.Survivors.Tails.Lines.BurstLine5, -- burn
+                game.ReplicatedStorage.ClientAssets.Sounds.sfx.Game.Survivors.Tails.Lines.ChargeLine, -- stand by
+                game.ReplicatedStorage.ClientAssets.Sounds.sfx.Game.Survivors.Tails.Lines.ChargeLine, -- stand by
             }
             local sound = Sounds[math.random(1, #Sounds)]:Clone()
             sound:SetAttribute("IsMyCloneToIgnore", true)
+            sound:SetAttribute("Subtitle", "wha")
             sound.Name = "CustomSpeech"
             sound.Parent = desc.Parent
             sound.Volume = 0.25 + desc.Volume
@@ -501,3 +488,23 @@ if _G.FoxOnTailsDollPlayerAddedConn then
     print("[FoxOnTailsDoll] Previous FoxOnTailsDollPlayerAddedConn disconnected")
 end
 _G.FoxOnTailsDollPlayerAddedConn = game.Players.PlayerAdded:Connect(onPlayerAdded)
+
+
+-- load custom assets
+local function loadCustomAsset(url, filename)
+    if not isfile(filename) then
+        print("[FoxOnTailsDoll] Downloading", filename.."...")
+        writefile(filename, game:HttpGet(url))
+    end
+    return getcustomasset(filename)
+end
+game.ReplicatedStorage.ClientAssets.Sounds.mus.Game.Round.ChaseThemes.TailsDoll.Default.NormalChase.SoundId = loadCustomAsset(
+    "https://github.com/lil2kki/My-Outcome-Memories/raw/refs/heads/main/FoxOnTailsDoll/SECRET%20HISTORY%20TAILS-%20OUTCOME%20MEMORIES%20UST%20(Music%20Only).mp3", 
+    "cache/lil2kki/FoxOnTailsDoll/SECRET HISTORY TAILS- OUTCOME MEMORIES UST (Music Only).mp3"
+)
+game.ReplicatedStorage.ClientAssets.Sounds.mus.Game.Round.ChaseThemes.TailsDoll.Default.NormalChase.LoopRegion = NumberRange.new(0, 0)
+
+game.ReplicatedStorage.ClientAssets.Sounds.mus.Game.Round.ChaseThemes.TailsDoll.Default.LastLifeChase:Destroy()
+local FeelstheRabbit = game.ReplicatedStorage.ClientAssets.Sounds.mus.Game.Round.ChaseThemes["2011x"].FeelstheRabbit.NormalChase:Clone()
+FeelstheRabbit.Name = "LastLifeChase"
+FeelstheRabbit.Parent = game.ReplicatedStorage.ClientAssets.Sounds.mus.Game.Round.ChaseThemes.TailsDoll.Default
