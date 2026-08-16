@@ -1,7 +1,7 @@
 print("[CrazyAmy] Now loading... Made by lil2kki <3")
 
 if not UnlockModule then function UnlockModule(a) print("Executor doesn't need to unlock module", a:GetFullName()) end end
-if not LockModulke then function LockModulke(a) print("Executor doesn't need to unlock module", a:GetFullName()) end end
+if not LockModule then function LockModulke(a) print("Executor doesn't need to unlock module", a:GetFullName()) end end
 
 -- storage animator set
 local OldAnimate = game.ReplicatedStorage:FindFirstChild("Characters", true):FindFirstChild("Kolossos", true):FindFirstChild("Animate", true)
