@@ -1,8 +1,8 @@
 -- local applycomestic = loadstring(game:HttpGet("https://github.com/lil2kki/My-Outcome-Memories/raw/HEAD/applycomestic.lua"))()
 -- applycomestic(player, player.OverlayModel)
 
-if not UnlockModule then function UnlockModule(a) return require(a) end end
-if not LockModulke then function LockModulke(a) return require(a) end end
+if not UnlockModule then function UnlockModule(a) print("Executor doesn't need to unlock module") end end
+if not LockModulke then function LockModulke(a) print("Executor doesn't need to unlock module") end end
 
 function applycomestic(player, primaryModel)
 
@@ -34,15 +34,10 @@ function applycomestic(player, primaryModel)
     end
     
     local function RequireUnlockedModule(Module)
-        local UnlockedModule = workspace:FindFirstChild(Module.Name .. "___unlocked")
-        if not UnlockedModule then
-            UnlockedModule = Module:Clone()
-            UnlockedModule.Parent = workspace
-            UnlockedModule.Name = Module.Name .. "___unlocked"
-            print("UnlockModule", UnlockedModule:GetFullName())
-        end
-        UnlockModule(UnlockedModule)
-        return require(UnlockedModule)
+        UnlockModule(Module)
+        local rtn = require(Module)
+        LockModule(Module)
+        return rtn
     end
 
     if not p2 then
