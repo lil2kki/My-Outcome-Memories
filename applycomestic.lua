@@ -2,7 +2,7 @@
 -- applycomestic(player, player.OverlayModel)
 
 if not UnlockModule then function UnlockModule(a) print("Executor doesn't need to unlock module", a:GetFullName()) end end
-if not LockModule then function LockModulke(a) print("Executor doesn't need to unlock module", a:GetFullName()) end end
+if not LockModule then function LockModule(a) print("Executor doesn't need to unlock module", a:GetFullName()) end end
 
 function applycomestic(player, primaryModel)
 
