@@ -1,8 +1,15 @@
--- local applycomestic = loadstring(game:HttpGet("https://github.com/lil2kki/My-Outcome-Memories/raw/HEAD/applycomestic.lua"))()
--- applycomestic(player, player.OverlayModel)
+--[[
+local applycomestic = loadstring(game:HttpGet("https://pastebin.com/raw/qHzmXnbm"))()
+-- for loaded player in round
+applycomestic(player, player.OverlayModel)
+-- for template model
+model:SetAttribute("EquippedCosmetics", "FAKETAILSDOLL,")
+model:SetAttribute("Character", "Tails")
+applycomestic(model)
+]]
 
-if not UnlockModule then function UnlockModule(a) print("Executor doesn't need to unlock module", a:GetFullName()) end end
-if not LockModule then function LockModule(a) print("Executor doesn't need to unlock module", a:GetFullName()) end end
+if not UnlockModule then function UnlockModule(a) return 1 end end
+if not LockModule then function LockModule(a) return 1 end end
 
 function applycomestic(player, primaryModel)
 
