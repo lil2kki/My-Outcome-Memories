@@ -67,7 +67,7 @@ function applycomestic(player, primaryModel)
 
             if ReplicatedStorage.ClientAssets.Cosmetics[v4]:FindFirstChild(v52) then
                 local v6 = ReplicatedStorage.ClientAssets.Cosmetics[v4]:FindFirstChild(v52):Clone()
-                local v7 = tostring(v6:GetAttribute("Belongs")):split(",")
+                local v7 = {v5, v5}-- tostring(v6:GetAttribute("Belongs")):split(",")
                 local Unique = v6:FindFirstChild("Unique")
 
                 if table.find(v7, v5) then
@@ -197,9 +197,7 @@ function applycomestic(player, primaryModel)
         return
     end
 
-    if not table.find(tostring(ReplicatedStorage.ClientAssets.Cosmetics[v2]:FindFirstChild(v3):GetAttribute("Belongs")):split(","), v5) then
-        return
-    end
+    -- if not table.find(tostring(ReplicatedStorage.ClientAssets.Cosmetics[v2]:FindFirstChild(v3):GetAttribute("Belongs")):split(","), v5) then return end
 
     local v26 = RequireUnlockedModule(ReplicatedStorage.ClientAssets.Cosmetics[v2]:FindFirstChild(v3))
 
