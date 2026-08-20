@@ -1,6 +1,8 @@
 print("[Honey On Blaze] Now loading... Made by lil2kki <3")
 print("[Honey On Blaze] Model used: https://create.roblox.com/store/asset/109641302875796")
 
+if not game:IsLoaded() then game.Loaded:Wait() end
+
 -- storage model template
 
 local tar = game.ReplicatedStorage:FindFirstChild("Characters", true):FindFirstChild("Blaze", true):FindFirstChild("Skins", true).Default
