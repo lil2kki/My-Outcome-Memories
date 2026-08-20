@@ -1,5 +1,7 @@
 print("[Cream.LMS] Now loading... Made by lil2kki <3")
 
+if not game:IsLoaded() then game.Loaded:Wait() end
+
 local function applyToModel(model)
 	if not model then return end
     
