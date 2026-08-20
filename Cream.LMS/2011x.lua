@@ -574,7 +574,7 @@ themes.Default.NormalChase.SoundId = myAsset("NormalChase_alt.mp3")
 themes.Default.NormalChase.PlaybackRegion = NumberRange.new(0, 0)
 themes.Default.NormalChase.LoopRegion = NumberRange.new(0, 0)
 
-themes.Default.LastLifeChase.SoundId = myAsset("LastLifeChase_alt.mp3")
+themes.Default.LastLifeChase.SoundId = myAsset("LastLifeChase_Overdrive.mp3")
 themes.Default.LastLifeChase.PlaybackRegion = NumberRange.new(0, 0)
 themes.Default.LastLifeChase.LoopRegion = NumberRange.new(0, 0)
 themes.Default.LastLifeChase.PlaybackSpeed = 1 -- OM 0.1a special
