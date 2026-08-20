@@ -1,6 +1,8 @@
 print("[FeelstheRabbit for 2011x] Now loading... Made by lil2kki <3")
 print("[FeelstheRabbit for 2011x] Model used: https://create.roblox.com/store/asset/74680877366454")
 
+if not game:IsLoaded() then game.Loaded:Wait() end
+
 -- storage model template
 
     local tar = game.ReplicatedStorage:FindFirstChild("Characters", true):FindFirstChild("2011x", true):FindFirstChild("Skins", true).Default
