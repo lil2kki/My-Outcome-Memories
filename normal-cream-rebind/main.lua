@@ -1,5 +1,7 @@
 -- normal-cream-rebind by lil2kki :3
 
+if not game:IsLoaded() then game.Loaded:Wait() end
+
 local player = game.Players.LocalPlayer
 local gui    = player:WaitForChild("PlayerGui")
 local uis    = game:GetService("UserInputService")
