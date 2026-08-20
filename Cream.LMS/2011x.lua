@@ -1,5 +1,7 @@
 print("[Cream.LMS for 2011x] Now loading... Made by lil2kki <3")
 
+if not game:IsLoaded() then game.Loaded:Wait() end
+
 -- storage animator set
 local OldAnimate = game.ReplicatedStorage:FindFirstChild("Characters", true):FindFirstChild("2011x", true):FindFirstChild("Animate", true)
 local CreamAnimate = game.ReplicatedStorage:FindFirstChild("Characters", true):FindFirstChild("Cream", true):FindFirstChild("Animate", true):Clone()
