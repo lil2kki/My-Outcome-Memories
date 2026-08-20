@@ -1,5 +1,7 @@
 print("[LMSONCHASE] Now loading... Made by lil2kki <3")
 
+if not game:IsLoaded() then game.Loaded:Wait() end
+
 local function tryReplaceThemes(Song)
     if not Song:IsA("Sound") then return end
     local path = Song:GetFullName()
