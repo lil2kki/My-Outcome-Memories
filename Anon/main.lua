@@ -3,6 +3,8 @@ _G.OMAnon_DisplayName  = _G.OMAnon_DisplayName or "LocalPlayer"
 
 print("[OMAnon] Now loading... Made by lil2kki <3")
 
+if not game:IsLoaded() then game.Loaded:Wait() end
+
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 
