@@ -1,5 +1,7 @@
 print("[Cream.LMS for TailsDoll] Now loading... Made by lil2kki <3")
 
+if not game:IsLoaded() then game.Loaded:Wait() end
+
 -- MODEL SETUP IN ReplicatedStorage (for UI and overlay ref)
 
     -- Add Icons
