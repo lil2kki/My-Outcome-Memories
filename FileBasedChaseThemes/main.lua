@@ -1,4 +1,6 @@
 print("[FileBasedChaseThemes] Now loading... Made by lil2kki <3")
+
+if not game:IsLoaded() then game.Loaded:Wait() end
 ---mdfmbkmbmgkofgmobmokmfg
 local function tryReplaceThemessss()
     for _, Song in ipairs(game.ReplicatedStorage.ClientAssets.Sounds.mus.Game.Round.ChaseThemes:GetDescendants()) do 
