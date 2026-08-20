@@ -1,5 +1,7 @@
 print("[FileBasedSoloThemes] Now loading... Made by lil2kki <3")
 
+if not game:IsLoaded() then game.Loaded:Wait() end
+
 -- Swaps default solo round music with your local .mp3 files from executor workspace. 
 -- Auto-restores original audio if a file got removed, 
 -- stops tracks on intermission (universal bugfix btw), 
