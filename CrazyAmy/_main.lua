@@ -1,5 +1,7 @@
 print("[CrazyAmy] Now loading... Made by lil2kki <3")
 
+if not game:IsLoaded() then game.Loaded:Wait() end
+
 if not UnlockModule then function UnlockModule(a) print("Executor doesn't need to unlock module", a:GetFullName()) end end
 if not LockModule then function LockModule(a) print("Executor doesn't need to unlock module", a:GetFullName()) end end
 
