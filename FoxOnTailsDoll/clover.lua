@@ -1,5 +1,7 @@
 print("[FoxOnTailsDoll] Now loading... Made by lil2kki <3")
 
+if not game:IsLoaded() then game.Loaded:Wait() end
+
 game.ReplicatedStorage.ClientAssets.Characters.EXE.TailsDoll.Skins.Default:Destroy()
 game.ReplicatedStorage.ClientAssets.Characters.Survivors.Tails.Skins.Default:Clone().Parent = 
 game.ReplicatedStorage.ClientAssets.Characters.EXE.TailsDoll.Skins
