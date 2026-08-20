@@ -1,5 +1,7 @@
 print("[2011x-New-Soundtrack] Now loading... Made by lil2kki <3")
 
+if not game:IsLoaded() then game.Loaded:Wait() end
+
 local function loadCustomAsset(url, filename)
     if not isfile(filename) then
         print("[2011x-New-Soundtrack] Downloading", filename.."...")
