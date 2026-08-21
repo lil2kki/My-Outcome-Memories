@@ -38,7 +38,7 @@ if model then -- setup modellll
     local function applySimpleCosmetic(Cosmetic)
         UnlockModule(Cosmetic.Unique)
         require(Cosmetic.Unique).load(model)
-        LockModulke(Cosmetic.Unique)
+        LockModule(Cosmetic.Unique)
         local target = model:FindFirstChild(Cosmetic:GetAttribute("WeldTo"), true)
         local weldPart = Cosmetic:FindFirstChild("Weld")
         weld(target, weldPart)
