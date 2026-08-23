@@ -2,6 +2,8 @@
 
 > ## [Anon (custom user name)](Anon)
 
+> ## [Cosmetic Manager](CosmeticManager)
+
 > ## [2011x New Soundtrack](2011x-New-Soundtrack)
 
 > ## [Fox On Tails Doll](FoxOnTailsDoll)
