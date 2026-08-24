@@ -157,7 +157,7 @@ local C_TEXT_RED = Color3.fromRGB(255, 60, 60)
 -- SCALING CONSTANTS
 local screenSize = game.GuiService:GetGuiInset().X
 local scale = math.min(workspace.CurrentCamera.ViewportSize.X / 1920, workspace.CurrentCamera.ViewportSize.Y / 1080)
-local function s(x) return x * (scale + 0.12) end
+local function s(x) return x * (scale) end
 
 -- ROOT
 local gui = new("ScreenGui", {
