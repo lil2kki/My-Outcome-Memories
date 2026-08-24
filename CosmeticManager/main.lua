@@ -154,7 +154,12 @@ local C_TEXT_MAIN = Color3.fromRGB(220, 220, 220)
 local C_TEXT_DIM = Color3.fromRGB(120, 120, 120)
 local C_TEXT_RED = Color3.fromRGB(255, 60, 60)
 
--- ROOT - BIGGER WINDOW (1100x700)
+-- SCALING CONSTANTS
+local screenSize = game.GuiService:GetGuiInset().X
+local scale = math.min(workspace.CurrentCamera.ViewportSize.X / 1920, workspace.CurrentCamera.ViewportSize.Y / 1080)
+local function s(x) return x * (scale + 0.12) end
+
+-- ROOT
 local gui = new("ScreenGui", {
 	Name = "CosmeticManager", 
 	ResetOnSpawn = false, 
@@ -162,50 +167,50 @@ local gui = new("ScreenGui", {
 }, game.Players.LocalPlayer.PlayerGui)
 
 local main = new("Frame", {
-	Size = UDim2.fromOffset(1100, 700), 
-	Position = UDim2.new(.5, -550, .5, -350), 
+	Size = UDim2.fromOffset(s(1100), s(700)), 
+	Position = UDim2.new(.5, -s(550), .5, -s(350)), 
 	BackgroundColor3 = C_BG_MAIN, 
 	BorderSizePixel = 0
 }, gui)
 stroke(main, C_ACCENT, 2)
 
--- TOP BAR (height 56)
+-- TOP BAR
 local bar = new("Frame", {
-	Size = UDim2.new(1, 0, 0, 56), 
+	Size = UDim2.new(1, 0, 0, s(56)), 
 	BackgroundColor3 = C_BG_DARKER, 
 	BorderSizePixel = 0
 }, main)
 stroke(bar, C_ACCENT, 1)
 
 new("TextLabel", {
-	Size = UDim2.new(1, -200, 1, 0), 
-	Position = UDim2.fromOffset(18, 0), 
+	Size = UDim2.new(1, -s(200), 1, 0), 
+	Position = UDim2.fromOffset(s(18), 0), 
 	BackgroundTransparency = 1, 
 	Text = "C0SMETIC MANAGER", 
 	TextColor3 = C_ACCENT_BRIGHT, 
-	TextSize = 34, 
+	TextSize = s(34), 
 	Font = Enum.Font.Arcade, 
 	TextXAlignment = Enum.TextXAlignment.Left
 }, bar)
 
 local selectedInfo = new("TextLabel", {
-	Size = UDim2.fromOffset(200, 56), 
-	Position = UDim2.new(1, -280, 0, 0), 
+	Size = UDim2.fromOffset(s(200), s(56)), 
+	Position = UDim2.new(1, -s(280), 0, 0), 
 	BackgroundTransparency = 1, 
 	Text = "", 
 	TextColor3 = C_TEXT_DIM, 
-	TextSize = 14, 
+	TextSize = s(14), 
 	Font = Enum.Font.Code, 
 	TextXAlignment = Enum.TextXAlignment.Right
 }, bar)
 
 local close = new("TextButton", {
-	Size = UDim2.fromOffset(260, 42), 
-	Position = UDim2.new(1, -270, 0, 7), 
+	Size = UDim2.fromOffset(s(260), s(42)), 
+	Position = UDim2.new(1, -s(270), 0, s(7)), 
 	BackgroundColor3 = Color3.fromRGB(90, 0, 0), 
 	Text = "APPLY & CLOSE", 
 	TextColor3 = Color3.fromRGB(255, 150, 150), 
-	TextSize = 18, 
+	TextSize = s(18), 
 	Font = Enum.Font.Arcade, 
 	BorderSizePixel = 0, 
 	AutoButtonColor = true
@@ -223,120 +228,120 @@ close.MouseButton1Click:Connect(function()
     })
 end)
 
--- LEFT : CHARACTERS (width 200)
+-- LEFT : CHARACTERS
 local charPanel = new("Frame", {
-	Size = UDim2.fromOffset(200, 632), 
-	Position = UDim2.fromOffset(12, 62), 
+	Size = UDim2.fromOffset(s(200), s(632)), 
+	Position = UDim2.fromOffset(s(12), s(62)), 
 	BackgroundColor3 = C_BG_PANEL, 
 	BorderSizePixel = 0
 }, main)
 stroke(charPanel, Color3.fromRGB(60, 0, 0), 1)
 
 new("TextLabel", {
-	Size = UDim2.new(1, -18, 0, 34), 
-	Position = UDim2.fromOffset(9, 6), 
+	Size = UDim2.new(1, -s(18), 0, s(34)), 
+	Position = UDim2.fromOffset(s(9), s(6)), 
 	BackgroundTransparency = 1, 
 	Text = "SUBJECTS", 
 	TextColor3 = C_TEXT_RED, 
-	TextSize = 18, 
+	TextSize = s(18), 
 	Font = Enum.Font.Arcade, 
 	TextXAlignment = Enum.TextXAlignment.Left
 }, charPanel)
 
 local charCount = new("TextLabel", {
-	Size = UDim2.fromOffset(50, 34), 
-	Position = UDim2.new(1, -58, 0, 6), 
+	Size = UDim2.fromOffset(s(50), s(34)), 
+	Position = UDim2.new(1, -s(58), 0, s(6)), 
 	BackgroundTransparency = 1, 
 	Text = tostring(#AvailableCharacters:GetChildren()), 
 	TextColor3 = C_TEXT_DIM, 
-	TextSize = 12, 
+	TextSize = s(12), 
 	Font = Enum.Font.Code, 
 	TextXAlignment = Enum.TextXAlignment.Right
 }, charPanel)
 
 local chars = new("ScrollingFrame", {
-	Size = UDim2.new(1, -12, 1, -46), 
-	Position = UDim2.fromOffset(6, 44), 
+	Size = UDim2.new(1, -s(12), 1, -s(46)), 
+	Position = UDim2.fromOffset(s(6), s(44)), 
 	BackgroundTransparency = 1, 
 	BorderSizePixel = 0, 
-	ScrollBarThickness = 6, 
+	ScrollBarThickness = s(6), 
 	ScrollBarImageColor3 = C_ACCENT,
 	ScrollBarImageTransparency = 0.2, 
 	CanvasSize = UDim2.new()
 }, charPanel)
 
 local charLayout = new("UIListLayout", {
-	Padding = UDim.new(0, 6), 
+	Padding = UDim.new(0, s(6)), 
 	SortOrder = Enum.SortOrder.Name
 }, chars)
 
--- CENTER : CHARACTER PREVIEW (width 340)
+-- CENTER : CHARACTER PREVIEW
 local prev = new("Frame", {
-	Size = UDim2.fromOffset(340, 632), 
-	Position = UDim2.fromOffset(220, 62), 
+	Size = UDim2.fromOffset(s(340), s(632)), 
+	Position = UDim2.fromOffset(s(220), s(62)), 
 	BackgroundColor3 = C_BG_PANEL, 
 	BorderSizePixel = 0
 }, main)
 stroke(prev, Color3.fromRGB(60, 0, 0), 1)
 
 local charName = new("TextLabel", {
-	Size = UDim2.new(1, -18, 0, 36), 
-	Position = UDim2.fromOffset(9, 6), 
+	Size = UDim2.new(1, -s(18), 0, s(36)), 
+	Position = UDim2.fromOffset(s(9), s(6)), 
 	BackgroundTransparency = 1, 
 	Text = "", 
 	TextColor3 = C_TEXT_MAIN, 
-	TextSize = 20, 
+	TextSize = s(20), 
 	Font = Enum.Font.Arcade, 
 	TextXAlignment = Enum.TextXAlignment.Left
 }, prev)
 
 local charCosmetics = new("TextLabel", {
-	Size = UDim2.new(1, -18, 0, 26), 
-	Position = UDim2.fromOffset(9, 34), 
+	Size = UDim2.new(1, -s(18), 0, s(26)), 
+	Position = UDim2.fromOffset(s(9), s(34)), 
 	BackgroundTransparency = 1, 
 	Text = "", 
 	TextColor3 = C_TEXT_DIM, 
-	TextSize = 12, 
+	TextSize = s(12), 
 	Font = Enum.Font.Code, 
 	TextXAlignment = Enum.TextXAlignment.Left
 }, prev)
 
 local view = new("ViewportFrame", {
-	Size = UDim2.new(1, -16, 1, -110), 
-	Position = UDim2.fromOffset(8, 62), 
+	Size = UDim2.new(1, -s(16), 1, -s(110)), 
+	Position = UDim2.fromOffset(s(8), s(62)), 
 	BackgroundColor3 = C_BG_DARKER, 
 	BorderSizePixel = 0,
 }, prev)
 stroke(view, Color3.fromRGB(40, 0, 0), 1)
 
 local controls = new("Frame", {
-	Size = UDim2.new(1, -16, 0, 36), 
-	Position = UDim2.fromOffset(8, prev.AbsoluteSize.Y - 42), 
+	Size = UDim2.new(1, -s(16), 0, s(36)), 
+	Position = UDim2.fromOffset(s(8), prev.AbsoluteSize.Y - s(42)), 
 	BackgroundTransparency = 1
 }, prev)
 
 local reset = new("TextButton", {
-	Size = UDim2.fromOffset(120, 32), 
-	Position = UDim2.new(.5, -60, 0, 0), 
+	Size = UDim2.fromOffset(s(120), s(32)), 
+	Position = UDim2.new(.5, -s(60), 0, 0), 
 	BackgroundColor3 = Color3.fromRGB(40, 10, 10), 
 	Text = "RESET VIEW", 
 	TextColor3 = C_TEXT_MAIN, 
-	TextSize = 14, 
+	TextSize = s(14), 
 	Font = Enum.Font.Code, 
 	BorderSizePixel = 0, 
 	AutoButtonColor = true
 }, controls)
 stroke(reset, Color3.fromRGB(80, 0, 0), 1)
 
--- RIGHT : COSMETICS (remaining width)
+-- RIGHT : COSMETICS
 local content = new("Frame", {
-	Size = UDim2.new(1, -580, 1, -68), 
-	Position = UDim2.fromOffset(567, 62), 
+	Size = UDim2.new(1, -s(580), 1, -s(68)), 
+	Position = UDim2.fromOffset(s(567), s(62)), 
 	BackgroundTransparency = 1
 }, main)
 
 local typeBar = new("Frame", {
-	Size = UDim2.new(1, 0, 0, 42), 
+	Size = UDim2.new(1, 0, 0, s(42)), 
 	BackgroundTransparency = 1
 }, content)
 
@@ -351,55 +356,54 @@ local typeList = new("ScrollingFrame", {
 
 local typeLayout = new("UIListLayout", {
 	FillDirection = Enum.FillDirection.Horizontal, 
-	Padding = UDim.new(0, 5), 
+	Padding = UDim.new(0, s(5)), 
 	SortOrder = Enum.SortOrder.Name
 }, typeList)
 
 local itemsBG = new("Frame", {
-	Size = UDim2.new(1, 0, 1, -50), 
-	Position = UDim2.fromOffset(0, 50), 
+	Size = UDim2.new(1, 0, 1, -s(50)), 
+	Position = UDim2.fromOffset(0, s(50)), 
 	BackgroundColor3 = C_BG_PANEL, 
 	BorderSizePixel = 0
 }, content)
 stroke(itemsBG, Color3.fromRGB(60, 0, 0), 1)
 
 new("TextLabel", {
-	Size = UDim2.new(1, -20, 0, 36), 
-	Position = UDim2.fromOffset(10, 4), 
+	Size = UDim2.new(1, -s(20), 0, s(36)), 
+	Position = UDim2.fromOffset(s(10), s(4)), 
 	BackgroundTransparency = 1, 
 	Text = "ALTERATIONS", 
 	TextColor3 = C_TEXT_RED, 
-	TextSize = 18, 
+	TextSize = s(18), 
 	Font = Enum.Font.Arcade, 
 	TextXAlignment = Enum.TextXAlignment.Left
 }, itemsBG)
 
 local itemCount = new("TextLabel", {
-	Size = UDim2.fromOffset(120, 36), 
-	Position = UDim2.new(1, -130, 0, 4), 
+	Size = UDim2.fromOffset(s(120), s(36)), 
+	Position = UDim2.new(1, -s(130), 0, s(4)), 
 	BackgroundTransparency = 1, 
 	Text = "", 
 	TextColor3 = C_TEXT_DIM, 
-	TextSize = 12, 
+	TextSize = s(12), 
 	Font = Enum.Font.Code, 
 	TextXAlignment = Enum.TextXAlignment.Right
 }, itemsBG)
 
 local itemList = new("ScrollingFrame", {
-	Size = UDim2.new(1, -12, 1, -44), 
-	Position = UDim2.fromOffset(6, 42), 
+	Size = UDim2.new(1, -s(12), 1, -s(44)), 
+	Position = UDim2.fromOffset(s(6), s(42)), 
 	BackgroundTransparency = 1, 
 	BorderSizePixel = 0, 
-	ScrollBarThickness = 6, 
+	ScrollBarThickness = s(6), 
 	ScrollBarImageColor3 = C_ACCENT,
 	ScrollBarImageTransparency = 0.2, 
 	CanvasSize = UDim2.new()
 }, itemsBG)
 
--- LARGER GRID CELLS (160x180)
 local grid = new("UIGridLayout", {
-	CellSize = UDim2.fromOffset(160, 180), 
-	CellPadding = UDim2.fromOffset(8, 8), 
+	CellSize = UDim2.fromOffset(s(160), s(180)), 
+	CellPadding = UDim2.fromOffset(s(8), s(8)), 
 	SortOrder = Enum.SortOrder.Name,
 	FillDirectionMaxCells = 5
 }, itemList)
@@ -626,8 +630,8 @@ local function showType(name)
 		stroke(b, Color3.fromRGB(60, 0, 0), 1).Name = "SelectStroke"
 
 		local v = new("ViewportFrame", {
-			Size = UDim2.new(1, -8, 1, -44), 
-			Position = UDim2.fromOffset(4, 4), 
+			Size = UDim2.new(1, -s(8), 1, -s(44)), 
+			Position = UDim2.fromOffset(s(4), s(4)), 
 			BackgroundColor3 = C_BG_DARKER, 
 			BorderSizePixel = 0,
 			LightDirection = Vector3.new(-1, -2, -1)
@@ -638,24 +642,24 @@ local function showType(name)
 		if not item:GetAttribute("Belongs") then item:SetAttribute("Belongs", "UNKNOWN") end
 
 		new("TextLabel", {
-			Size = UDim2.new(1, -10, 0, 34), 
-			Position = UDim2.new(0, 5, 1, -38), 
+			Size = UDim2.new(1, -s(10), 0, s(34)), 
+			Position = UDim2.new(0, s(5), 1, -s(38)), 
 			BackgroundTransparency = 1, 
 			Text = item.Name .. "\n[ " .. item:GetAttribute("Belongs") .. " ]", 
 			TextColor3 = C_TEXT_MAIN, 
-			TextSize = 16, 
+			TextSize = s(16), 
 			Font = Enum.Font.Code, 
 			TextTruncate = Enum.TextTruncate.AtEnd
 		}, b)
 
 		local tag = new("TextLabel", {
 			Name = "SelectedTag", 
-			Size = UDim2.fromOffset(65, 22), 
-			Position = UDim2.fromOffset(6, 6), 
+			Size = UDim2.fromOffset(s(65), s(22)), 
+			Position = UDim2.fromOffset(s(6), s(6)), 
 			BackgroundColor3 = C_ACCENT_BRIGHT, 
 			Text = "ACTIVE", 
 			TextColor3 = Color3.fromRGB(0, 0, 0), 
-			TextSize = 11, 
+			TextSize = s(11), 
 			Font = Enum.Font.Arcade, 
 			Visible = false
 		}, b)
@@ -671,7 +675,7 @@ local function showType(name)
 	end
 
 	task.wait()
-	itemList.CanvasSize = UDim2.fromOffset(0, grid.AbsoluteContentSize.Y + 8)
+	itemList.CanvasSize = UDim2.fromOffset(0, grid.AbsoluteContentSize.Y + s(8))
 
 	updateItems()
 end
@@ -679,11 +683,11 @@ end
 -- CHARACTERS
 for _, char in ipairs(AvailableCharacters:GetChildren()) do
 	local b = new("TextButton", {
-		Size = UDim2.new(1, -4, 0, 38), 
+		Size = UDim2.new(1, -s(4), 0, s(38)), 
 		BackgroundColor3 = Color3.fromRGB(25, 8, 8), 
 		Text = "   " .. char.Name, 
 		TextColor3 = C_TEXT_DIM, 
-		TextSize = 15, 
+		TextSize = s(15), 
 		Font = Enum.Font.Code, 
 		BorderSizePixel = 0, 
 		AutoButtonColor = true, 
@@ -707,17 +711,17 @@ for _, char in ipairs(AvailableCharacters:GetChildren()) do
 end
 
 task.wait()
-chars.CanvasSize = UDim2.fromOffset(0, charLayout.AbsoluteContentSize.Y + 6)
+chars.CanvasSize = UDim2.fromOffset(0, charLayout.AbsoluteContentSize.Y + s(6))
 
 -- TYPES
 for _, folder in ipairs(Cosmetics:GetChildren()) do
 	if not blocked[folder.Name] then
 		local b = new("TextButton", {
-			Size = UDim2.fromOffset(math.max(90, #folder.Name * 10 + 30), 34), 
+			Size = UDim2.fromOffset(math.max(s(90), #folder.Name * s(10) + s(30)), s(34)), 
 			BackgroundColor3 = Color3.fromRGB(25, 8, 8), 
 			Text = folder.Name, 
 			TextColor3 = C_TEXT_DIM, 
-			TextSize = 14, 
+			TextSize = s(14), 
 			Font = Enum.Font.Code, 
 			BorderSizePixel = 0, 
 			AutoButtonColor = true
@@ -733,7 +737,7 @@ for _, folder in ipairs(Cosmetics:GetChildren()) do
 end
 
 task.wait()
-typeList.CanvasSize = UDim2.fromOffset(typeLayout.AbsoluteContentSize.X + 8, 0)
+typeList.CanvasSize = UDim2.fromOffset(typeLayout.AbsoluteContentSize.X + s(8), 0)
 
 -- INITIAL
 local firstChar = AvailableCharacters:GetChildren()[1]
