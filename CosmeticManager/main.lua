@@ -1,5 +1,7 @@
 print("[OM Cosmetic Manager] Now loading... Made by lil2kki <3")
 
+if not game:IsLoaded() then game.Loaded:Wait() end
+
 while game.ReplicatedStorage.ClientAssets.Characters:FindFirstChild("CosmeticManagerAvailableCharacters") do
 game.ReplicatedStorage.ClientAssets.Characters:FindFirstChild("CosmeticManagerAvailableCharacters"):Destroy() end
 
