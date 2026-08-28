@@ -185,21 +185,13 @@ local function tryUpdatePlayer(player)
                 local val = player:GetAttribute(attr)
                 if val and val > 0 then
                     player.Health.Value = 100 - (val * 10)
-                    player:SetAttribute("State", "alt")
+                    if not player:GetAttribute("State") == "rage" then player:SetAttribute("State", "alt") end
                 elseif not val or val <= 0 then
                     player.Health.Value = 100
-                    player:SetAttribute("State", "default")
+                    if not player:GetAttribute("State") == "rage" then player:SetAttribute("State", "default") end
                 end
             end
         end)
-    end
-
-    -- sometimes game spam errors without it lol
-    if not player:FindFirstChild("BeingChased") then
-        local BeingChased = Instance.new("ObjectValue")
-        BeingChased.Name = "BeingChased"
-        BeingChased.Value = player
-        BeingChased.Parent = player
     end
 
     local function rename(oldName, newName)
@@ -569,6 +561,8 @@ local function myAsset(fileName)
 end
 
 local themes = game:GetService("ReplicatedStorage"):FindFirstChild("ChaseThemes", true):FindFirstChild("2011x", true)
+
+themes.Default.Rage.SoundId = myAsset("RageXD.mp3")
 
 themes.Default.TerrorRadius.SoundId = myAsset("TerrorRadius2.mp3")
 
