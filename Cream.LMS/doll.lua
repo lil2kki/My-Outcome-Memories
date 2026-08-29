@@ -205,16 +205,16 @@ local function tryUpdatePlayer(player)
     src = src:FindFirstChild("Skins", true)
     src = src:FindFirstChild("Default", true)
 
-    local mdl = src:Clone()
-    mdl.Parent = player
-    mdl.Name = "OverlayModel"
+    local OverlayModel = src:Clone()
+    OverlayModel.Parent = player
+    OverlayModel.Name = "OverlayModel"
 
-    local myHRP = mdl:FindFirstChild("HumanoidRootPart", true)
-    if not myHRP then mdl:Destroy() return end
+    local myHRP = OverlayModel:FindFirstChild("HumanoidRootPart", true)
+    if not myHRP then OverlayModel:Destroy() return end
 
-    local myHead = mdl:FindFirstChildOfClass("Motor6D", true)
+    local myHead = OverlayModel:FindFirstChildOfClass("Motor6D", true)
 
-    for _, v in ipairs(mdl:GetDescendants()) do
+    for _, v in ipairs(OverlayModel:GetDescendants()) do
         if v:IsA("Motor6D") and v.Name == "Head" then myHead = v end
         if v:IsA("Humanoid") then v:Destroy() end
         if v:IsA("Animator") then v:Destroy() end
@@ -290,6 +290,37 @@ local function tryUpdatePlayer(player)
             end
         end)
     --
+	
+    player.DescendantAdded:Connect(function(desc)
+        if desc.Name == "Rolling" then desc:Destroy() end -- NO ROLL VELOC
+        if desc.Name == "_BLOOD" then
+        	desc.Name = "_BLOOD_HANDLED"
+            local depth1 = {}
+            local depth2 = {}
+            local depth3 = {}
+            for _, v in ipairs(OverlayModel:GetDescendants()) do
+            	if not v:IsA("MeshPart") then continue end
+                if #v:GetFullName():split(".") - #OverlayModel:GetFullName():split(".") <= 1 then table.insert(depth1, v) end
+                if #v:GetFullName():split(".") - #OverlayModel:GetFullName():split(".") <= 2 then table.insert(depth2, v) end
+                if #v:GetFullName():split(".") - #OverlayModel:GetFullName():split(".") <= 3 then table.insert(depth3, v) end
+            end
+            -- depth 1
+            if #depth1 > 0 then desc.Parent = depth1[math.random(#depth1)] end -- move org and then clone it
+            if #depth1 > 0 then desc:Clone().Parent = depth1[math.random(#depth1)] end
+            -- depth 2
+            if #depth2 > 0 then desc:Clone().Parent = depth2[math.random(#depth2)] end
+            if #depth2 > 0 then desc:Clone().Parent = depth2[math.random(#depth2)] end
+            if #depth2 > 0 then desc:Clone().Parent = depth2[math.random(#depth2)] end
+            if #depth2 > 0 then desc:Clone().Parent = depth2[math.random(#depth2)] end
+            -- depth 3
+            if #depth3 > 0 then desc:Clone().Parent = depth3[math.random(#depth3)] end
+            if #depth3 > 0 then desc:Clone().Parent = depth3[math.random(#depth3)] end
+            if #depth3 > 0 then desc:Clone().Parent = depth3[math.random(#depth3)] end
+            if #depth3 > 0 then desc:Clone().Parent = depth3[math.random(#depth3)] end
+            if #depth3 > 0 then desc:Clone().Parent = depth3[math.random(#depth3)] end
+            if #depth3 > 0 then desc:Clone().Parent = depth3[math.random(#depth3)] end
+        end
+    end)
 
 end
 
