@@ -3,10 +3,10 @@ print("[Cream.LMS for 2011x] Now loading... Made by lil2kki <3")
 if not game:IsLoaded() then game.Loaded:Wait() end
 
 -- storage animator set
-local OldAnimate = game.ReplicatedStorage:FindFirstChild("Characters", true):FindFirstChild("2011x", true):FindFirstChild("Animate", true)
+local Animate = game:GetService("ReplicatedStorage").ClientAssets.Characters.EXE["2011x"]:FindFirstChild("Animate", true)
 local CreamAnimate = game.ReplicatedStorage:FindFirstChild("Characters", true):FindFirstChild("Cream", true):FindFirstChild("Animate", true):Clone()
-CreamAnimate.Parent = OldAnimate.Parent
-OldAnimate:Destroy()
+CreamAnimate.Parent = Animate.Parent
+Animate:Destroy()
 
 CreamAnimate.Anims.Canon.Name = "Invis"
 
@@ -21,7 +21,6 @@ CreamAnimate.Anims.Invis.Idle:Destroy()
 CreamAnimate.Anims.HealLoop:Clone().Parent = CreamAnimate.Anims.Invis
 CreamAnimate.Anims.Invis.HealLoop.Name = "Idle"-- rename clone
 
-
 CreamAnimate.Anims.alt:Clone().Parent = CreamAnimate.Anims
 CreamAnimate.Anims.alt.Name = "Rage" -- rename clone
 
@@ -31,18 +30,25 @@ CreamAnimate.Anims.Walk.Name = "SelectPose" -- rename clone
 CreamAnimate.Anims.Summon:Clone().Parent = CreamAnimate.Anims
 CreamAnimate.Anims.Summon.Name = "TeleportAttack" -- rename clone
 
--- storage model template
-local tar = game.ReplicatedStorage:FindFirstChild("Characters", true):FindFirstChild("2011x", true):FindFirstChild("Skins", true).Default
+local mikuAnims = game:GetService("ReplicatedStorage").ClientAssets.Characters.EXE["2011x"].CustomAnimation.miku
+local CreamAnims = CreamAnimate.Anims:Clone()
+CreamAnims.Parent = mikuAnims.Parent
+CreamAnims.Name = mikuAnims.Name
+mikuAnims:Destroy()
 
-local model = game.ReplicatedStorage.ClientAssets.Characters.Survivors.Cream.Skins.Default:Clone()
-model.Name = tar.Name
-model.Parent = tar.Parent
-tar:Destroy()
+-- storage Cream template
+local Default = game:GetService("ReplicatedStorage").ClientAssets.Characters.EXE["2011x"]:FindFirstChild("Skins", true).Default
 
-if model then -- setup modellll
-    local function find(name) return model:FindFirstChild(name, true) end
+local Cream = --game:GetObjects("rbxassetid://130430011241692")[1]--
+game.ReplicatedStorage.ClientAssets.Characters.Survivors.Cream.Skins.Default:Clone()
+Cream.Name = Default.Name
+Cream.Parent = Default.Parent
+Default:Destroy()
+
+if Cream then -- setup creammm
+    local function find(name) return Cream:FindFirstChild(name, true) end
     -- Material.Slate
-    for _, v in ipairs(model:GetDescendants()) do
+    for _, v in ipairs(Cream:GetDescendants()) do
         if v:IsA("BasePart") then
             v.Material = Enum.Material.Slate
         end
@@ -52,7 +58,7 @@ if model then -- setup modellll
     local eyeNames = {{"Eye1","eye1"}, {"Eye2","eye2"}}
     for _, pair in ipairs(eyeNames) do
         local srcPart = thatslikeevilandscary:FindFirstChild(pair[1], true)
-        local dstPart = model:FindFirstChild(pair[2], true)
+        local dstPart = Cream:FindFirstChild(pair[2], true)
         if srcPart and dstPart then
             dstPart.Material = Enum.Material.Neon
             dstPart.Color = Color3.fromRGB(0,0,0)
@@ -146,6 +152,13 @@ if model then -- setup modellll
         
 end
 
+local miku = game:GetService("ReplicatedStorage").ClientAssets.Characters.EXE["2011x"]:FindFirstChild("Skins", true).miku
+
+local ModernMinonCream = game:GetObjects("rbxassetid://107766817063342")[1]
+ModernMinonCream.Name = miku.Name
+ModernMinonCream.Parent = miku.Parent
+miku:Destroy()
+
 -- Cream Icons
 while game.ReplicatedStorage.ClientAssets.Icons:FindFirstChild("2011x") do
     game.ReplicatedStorage.ClientAssets.Icons["2011x"]:Destroy()
@@ -164,10 +177,10 @@ _G.Cream2011xSkin_UnleashedSounds = {}
 
 local function tryUpdatePlayer(player)
     if not player:IsA("Model") then return end
-    if player:GetAttribute("Character") ~= "2011x" then return end
-    if player:GetAttribute("Skin") ~= "Default" then return end
+    if not (player:GetAttribute("Character") == "2011x") then return end
+    if not ((player:GetAttribute("Skin") == "Default") or (player:GetAttribute("Skin") == "miku")) then return end
 
-    print("[Cream.LMS for 2011x] Prebuild updating model for " .. player.Name .. "...")
+    print("[Cream.LMS for 2011x] Prebuild updating Cream for " .. player.Name .. "...")
 
     if player:FindFirstChild("OverlayModel") then
         warn("[Cream.LMS for 2011x] Player already have OverlayModel, update cancelled")
@@ -215,8 +228,21 @@ local function tryUpdatePlayer(player)
     
     if player:WaitForChild("Animate") and player:WaitForChild("Humanoid") then
     
-        cheese = game.ReplicatedStorage:FindFirstChild("Characters", true):FindFirstChild("Cream", true):FindFirstChild("cheese", true):Clone()
+        if cheese then cheese:Destroy() end
+        cheese = --game.ReplicatedStorage:FindFirstChild("Characters", true):FindFirstChild("Cream", true):FindFirstChild("cheese", true):Clone()
+                    game:GetObjects("rbxassetid://123043898753438")[1]
         cheese.Parent = player
+        for _, v in ipairs(cheese:GetDescendants()) do 
+        	if v:IsA("BasePart") then
+                v.CollisionGroup = "Players"
+                v.CollisionGroupId = 3
+                v.CanCollide = false
+                v.CanTouch = false
+            end 
+        end
+        for _, v in ipairs(game.ReplicatedStorage:FindFirstChild("Characters", true):FindFirstChild("Cream", true):FindFirstChild("cheese", true).HumanoidRootPart:GetChildren()) do
+        	v:Clone().Parent = cheese.HumanoidRootPart
+        end
 
         local anims = game.ReplicatedStorage.ClientAssets.Characters.EXE["2011x"].scriptstuff.Animate.Anims
 
@@ -305,12 +331,9 @@ local function tryUpdatePlayer(player)
 
     for _, v in ipairs(player:GetDescendants()) do
         if v:IsA("BasePart") and v.Name ~= "HumanoidRootPart" then
-            v:SetAttribute("HiddenAway", "FOR CREAM")
-            v:SetAttribute("doesntcount", true)
-            v.Color = Color3.new(0/255, 0/255, 0/255)
-            v.Material = Enum.Material.Neon
             v.LocalTransparencyModifier = 1
             v.Changed:Connect(function(property)
+            	task.wait()
                 if property == "LocalTransparencyModifier" then
                     v.LocalTransparencyModifier = 1
                 end
@@ -323,15 +346,17 @@ local function tryUpdatePlayer(player)
                             if ov:IsA("Trail") then ov.Enabled = (v.Transparency < 0.5) end -- old cream
                         end
                     end
+                    if cheese then cheese:SetAttribute("Pause", (v.Transparency > 0.5)) end
                 end
             end)
         end
         if v:IsA("SurfaceGui") then v.Enabled = false end
         if v:IsA("SurfaceAppearance") then v:Destroy() end
+        if v:IsA("Decal") then v:Destroy() end
     end
 
     -- Overlay Model
-    local OverlayModel = game.ReplicatedStorage:FindFirstChild("Characters", true):FindFirstChild("2011x", true):FindFirstChild("Skins", true).Default:Clone()
+    local OverlayModel = game:GetService("ReplicatedStorage").ClientAssets.Characters.EXE["2011x"]["Skins"][player:GetAttribute("Skin")]:Clone()
     OverlayModel.Name = "OverlayModel"
     OverlayModel.Parent = player
 
@@ -339,15 +364,15 @@ local function tryUpdatePlayer(player)
     if not myHRP then OverlayModel:Destroy() return end
 
     for _, v in ipairs(OverlayModel:GetDescendants()) do
+        -- if v:IsA("Humanoid") then v.EvaluateStateMachine = false end
         if v:IsA("Humanoid") then v:Destroy() end
         if v:IsA("Animator") then v:Destroy() end
         if v:IsA("BasePart") then
+            v.CollisionGroup = "Players"
+            v.CollisionGroupId = 3
             v.CanCollide = false
-            v.Anchored = false
             v.CanTouch = false
-            v.CanQuery = false
-            v.Massless = true
-            if v.Transparency > 0 then v:SetAttribute("IgnoreTransparency", true) end
+            if v.Transparency > 0 then v:SetAttribute("IgnoreTransparency", true) end 
         end
     end
 
@@ -387,6 +412,34 @@ local function tryUpdatePlayer(player)
         -- print(desc.ClassName, desc:GetFullName())
 
         if desc.Name == "Rolling" then desc:Destroy() end -- NO ROLL VELOC
+
+        if desc.Name == "_BLOOD" then
+        	desc.Name = "_BLOOD_HANDLED"
+            local depth1 = {}
+            local depth2 = {}
+            local depth3 = {}
+            for _, v in ipairs(OverlayModel:GetDescendants()) do
+            	if not v:IsA("MeshPart") then continue end
+                if #v:GetFullName():split(".") - #OverlayModel:GetFullName():split(".") <= 1 then table.insert(depth1, v) end
+                if #v:GetFullName():split(".") - #OverlayModel:GetFullName():split(".") <= 2 then table.insert(depth2, v) end
+                if #v:GetFullName():split(".") - #OverlayModel:GetFullName():split(".") <= 3 then table.insert(depth3, v) end
+            end
+            -- depth 1
+            if #depth1 > 0 then desc.Parent = depth1[math.random(#depth1)] end -- move org and then clone it
+            if #depth1 > 0 then desc:Clone().Parent = depth1[math.random(#depth1)] end
+            -- depth 2
+            if #depth2 > 0 then desc:Clone().Parent = depth2[math.random(#depth2)] end
+            if #depth2 > 0 then desc:Clone().Parent = depth2[math.random(#depth2)] end
+            if #depth2 > 0 then desc:Clone().Parent = depth2[math.random(#depth2)] end
+            if #depth2 > 0 then desc:Clone().Parent = depth2[math.random(#depth2)] end
+            -- depth 3
+            if #depth3 > 0 then desc:Clone().Parent = depth3[math.random(#depth3)] end
+            if #depth3 > 0 then desc:Clone().Parent = depth3[math.random(#depth3)] end
+            if #depth3 > 0 then desc:Clone().Parent = depth3[math.random(#depth3)] end
+            if #depth3 > 0 then desc:Clone().Parent = depth3[math.random(#depth3)] end
+            if #depth3 > 0 then desc:Clone().Parent = depth3[math.random(#depth3)] end
+            if #depth3 > 0 then desc:Clone().Parent = depth3[math.random(#depth3)] end
+        end
 
         if not desc:IsA("Sound") then return end
         if not desc.Parent or not desc.Parent.Parent then return end
@@ -477,7 +530,7 @@ local function tryUpdatePlayer(player)
     end
     
     -- kill Cheese...
-	player:AddTag("Cheeseless")
+    if player:GetAttribute("Skin") ~= "miku" then player:AddTag("Cheeseless") end
 
     -- stupid detail
     local function headnervsss(player)
