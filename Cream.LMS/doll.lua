@@ -163,16 +163,7 @@ local function tryUpdatePlayer(player)
         return
     end
 
-    local isLocalPlayer = player.Name == game.Players.LocalPlayer.Name
-
     -- first prebuild setup
-        
-        -- sometimes game spam errors without it lol
-        local BeingChased = Instance.new("ObjectValue")
-        BeingChased.Name = "BeingChased"
-        BeingChased.Value = player
-        BeingChased.Parent = player
-        
         local healthxd = Instance.new("NumberValue")
         healthxd.Name = "Health"
         healthxd.Parent = player
@@ -180,11 +171,10 @@ local function tryUpdatePlayer(player)
             task.wait(1) -- breaks health bar :3
             healthxd.Value = 100
         end)()
-
     --
 
     -- wait server build..
-    player:WaitForChild("Animate")
+    player:WaitForChild("cam")
     local lastCamCFrame = workspace.CurrentCamera.CFrame
     repeat task.wait() until workspace.CurrentCamera.CFrame ~= lastCamCFrame
     
@@ -307,21 +297,21 @@ local function onPlayerAdded(player)
     -- Check if they already spawned in
     if player.Character then tryUpdatePlayer(player.Character) end
     -- Listen for the player (re)spawning
-    _G.Cream2011xCharacterAddedConn = _G.Cream2011xCharacterAddedConn or {}
-    if _G.Cream2011xCharacterAddedConn[player.Name] then
-        _G.Cream2011xCharacterAddedConn[player.Name]:Disconnect()
-        print("[Cream.LMS for 2011x] Previous Cream2011xCharacterAddedConn disconnected for", player.Name)
+    _G.CreamTailsDollCharacterAddedConn = _G.CreamTailsDollCharacterAddedConn or {}
+    if _G.CreamTailsDollCharacterAddedConn[player.Name] then
+        _G.CreamTailsDollCharacterAddedConn[player.Name]:Disconnect()
+        print("[Cream.LMS for TailsDoll] Previous CreamTailsDollCharacterAddedConn disconnected for", player.Name)
     end
-    _G.Cream2011xCharacterAddedConn[player.Name] = player.CharacterAdded:Connect(tryUpdatePlayer) 
+    _G.CreamTailsDollCharacterAddedConn[player.Name] = player.CharacterAdded:Connect(tryUpdatePlayer) 
 end
 
 for _, player in game.Players:GetPlayers() do onPlayerAdded(player) end
 
-if _G.Cream2011xPlayerAddedConn then
-    _G.Cream2011xPlayerAddedConn:Disconnect()
-    print("[Cream.LMS for 2011x] Previous Cream2011xPlayerAddedConn disconnected")
+if _G.CreamTailsDollPlayerAddedConn then
+    _G.CreamTailsDollPlayerAddedConn:Disconnect()
+    print("[Cream.LMS for TailsDoll] Previous CreamTailsDollPlayerAddedConn disconnected")
 end
-_G.Cream2011xPlayerAddedConn = game.Players.PlayerAdded:Connect(onPlayerAdded)
+_G.CreamTailsDollPlayerAddedConn = game.Players.PlayerAdded:Connect(onPlayerAdded)
 
 
 -- if game then return end
