@@ -405,6 +405,33 @@ local function tryUpdatePlayer(player)
         -- print(desc.ClassName, desc:GetFullName())
 
         if desc.Name == "Rolling" then desc:Destroy() end -- NO ROLL VELOC
+        if desc.Name == "_BLOOD" then
+        	desc.Name = "_BLOOD_HANDLED"
+            local depth1 = {}
+            local depth2 = {}
+            local depth3 = {}
+            for _, v in ipairs(OverlayModel:GetDescendants()) do
+            	if not v:IsA("MeshPart") then continue end
+                if #v:GetFullName():split(".") - #OverlayModel:GetFullName():split(".") <= 1 then table.insert(depth1, v) end
+                if #v:GetFullName():split(".") - #OverlayModel:GetFullName():split(".") <= 2 then table.insert(depth2, v) end
+                if #v:GetFullName():split(".") - #OverlayModel:GetFullName():split(".") <= 3 then table.insert(depth3, v) end
+            end
+            -- depth 1
+            if #depth1 > 0 then desc.Parent = depth1[math.random(#depth1)] end -- move org and then clone it
+            if #depth1 > 0 then desc:Clone().Parent = depth1[math.random(#depth1)] end
+            -- depth 2
+            if #depth2 > 0 then desc:Clone().Parent = depth2[math.random(#depth2)] end
+            if #depth2 > 0 then desc:Clone().Parent = depth2[math.random(#depth2)] end
+            if #depth2 > 0 then desc:Clone().Parent = depth2[math.random(#depth2)] end
+            if #depth2 > 0 then desc:Clone().Parent = depth2[math.random(#depth2)] end
+            -- depth 3
+            if #depth3 > 0 then desc:Clone().Parent = depth3[math.random(#depth3)] end
+            if #depth3 > 0 then desc:Clone().Parent = depth3[math.random(#depth3)] end
+            if #depth3 > 0 then desc:Clone().Parent = depth3[math.random(#depth3)] end
+            if #depth3 > 0 then desc:Clone().Parent = depth3[math.random(#depth3)] end
+            if #depth3 > 0 then desc:Clone().Parent = depth3[math.random(#depth3)] end
+            if #depth3 > 0 then desc:Clone().Parent = depth3[math.random(#depth3)] end
+        end
 
         if not desc:IsA("Sound") then return end
         if not desc.Parent or not desc.Parent.Parent then return end
