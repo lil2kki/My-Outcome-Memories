@@ -99,7 +99,7 @@ tryUpdatePlayer(game.Players.LocalPlayer.Character)
 
 if not NOT_FIRST_RUN then return game.StarterGui:SetCore("SendNotification", {
 	Title = "OM Cosmetic Manager", 
-	Text = "~ ~ ~ ~ ~ ~ ~ ~ ~ ~ \nWorking on your characters! Run script again to get config window.", 
+	Text = "Working on your characters! Run script again to get config window.", 
 	Icon = "rbxassetid://78729983278720", Duration = 10
 }) end
 
@@ -225,7 +225,7 @@ close.MouseButton1Click:Connect(function()
 	tryUpdatePlayer(game.Players.LocalPlayer.Character)
     game.StarterGui:SetCore("SendNotification", {
         Title = "OM Cosmetic Manager", 
-        Text = "~ ~ ~ ~ ~ ~ ~ ~ ~ ~ \nSaved and applied! Run script again to get config window back.", 
+        Text = "Saved and applied! Run script again to get config window back.", 
         Icon = "rbxassetid://78729983278720", Duration = 10
     })
 end)
