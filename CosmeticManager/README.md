@@ -2,7 +2,7 @@
 
 Mix, see secret ones and experiment with different characters! 
 
-(notices: it doesnt show up to other people, run script twice to get config ui)
+(NOTICE: Fully client sided **excluding custom animations**, run script twice on session to get config ui)
 
 ## To execute:
 ```lua
