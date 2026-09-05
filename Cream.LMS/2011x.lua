@@ -8,6 +8,13 @@ local CreamAnimate = game.ReplicatedStorage:FindFirstChild("Characters", true):F
 CreamAnimate.Parent = Animate.Parent
 Animate:Destroy()
 
+CreamAnimate.Anims.Default.Walk:Clone().Parent = CreamAnimate.Anims
+CreamAnimate.Anims.Walk.Name = "SelectPose" -- rename clone
+
+CreamAnimate.Anims.Canon.Idle:Clone().Parent = CreamAnimate.Anims
+CreamAnimate.Anims.Idle.AnimationId = "rbxassetid://101475077691415"
+CreamAnimate.Anims.Idle.Name = "ResultPose" -- rename clone
+
 CreamAnimate.Anims.Canon.Name = "Invis"
 
 CreamAnimate.Anims.Fall:Clone().Parent = CreamAnimate.Anims.Invis
@@ -24,17 +31,30 @@ CreamAnimate.Anims.Invis.HealLoop.Name = "Idle"-- rename clone
 CreamAnimate.Anims.alt:Clone().Parent = CreamAnimate.Anims
 CreamAnimate.Anims.alt.Name = "Rage" -- rename clone
 
-CreamAnimate.Anims.Default.Walk:Clone().Parent = CreamAnimate.Anims
-CreamAnimate.Anims.Walk.Name = "SelectPose" -- rename clone
-
 CreamAnimate.Anims.Summon:Clone().Parent = CreamAnimate.Anims
 CreamAnimate.Anims.Summon.Name = "TeleportAttack" -- rename clone
 
-local mikuAnims = game:GetService("ReplicatedStorage").ClientAssets.Characters.EXE["2011x"].CustomAnimation.miku
-local CreamAnims = CreamAnimate.Anims:Clone()
-CreamAnims.Parent = mikuAnims.Parent
-CreamAnims.Name = mikuAnims.Name
-mikuAnims:Destroy()
+-- RES_Screen winscreen anim 
+if not isfile("cache/lil2kki/Cream.LMS/WinScreen.mp3") then writefile("cache/lil2kki/Cream.LMS/WinScreen.mp3", game:HttpGet(
+    "https://github.com/lil2kki/My-Outcome-Memories/raw/refs/heads/main/Cream.LMS/assets/WinScreen.mp3"
+)) end
+local RES_ScreenTheme = getcustomasset("cache/lil2kki/Cream.LMS/WinScreen.mp3")
+if _G.Cream2011xRESScreenAddedConn then _G.Cream2011xRESScreenAddedConn:Disconnect() print("[Cream.LMS for 2011x] Previous Cream2011xRESScreenAddedConn disconnected") end
+_G.Cream2011xRESScreenAddedConn = workspace.ChildAdded:Connect(function(child)
+	print(child)
+	if child.Name ~= "RES_Screen" then warn("Name") return end
+    local map = child:WaitForChild("2011x", 30) -- wait TVs part
+	if not map then warn("map") return end
+    game:GetService("Lighting").Atmosphere.Color = Color3.new(0, 0, 0)
+    game:GetService("Lighting").Atmosphere.Decay = Color3.new(0, 0, 0)
+    map.Theme.SoundId = RES_ScreenTheme
+    map.Map:Destroy()
+    local exe = child:WaitForChild("", 30) -- yea just empty name
+    exe.Humanoid.Animator:LoadAnimation(CreamAnimate.Anims.Revive):Play()
+    local track = exe.Humanoid.Animator:LoadAnimation(CreamAnimate.Anims.HealLoop)
+    track:Play(3)
+    track:AdjustSpeed(0.25)
+end)
 
 -- storage Cream template
 local Default = game:GetService("ReplicatedStorage").ClientAssets.Characters.EXE["2011x"]:FindFirstChild("Skins", true).Default
@@ -152,6 +172,12 @@ if Cream then -- setup creammm
         
 end
 
+local mikuAnims = game:GetService("ReplicatedStorage").ClientAssets.Characters.EXE["2011x"].CustomAnimation.miku
+local CreamAnims = CreamAnimate.Anims:Clone()
+CreamAnims.Parent = mikuAnims.Parent
+CreamAnims.Name = mikuAnims.Name
+mikuAnims:Destroy()
+
 local miku = game:GetService("ReplicatedStorage").ClientAssets.Characters.EXE["2011x"]:FindFirstChild("Skins", true).miku
 
 local ModernMinonCream = game:GetObjects("rbxassetid://107766817063342")[1]
@@ -177,8 +203,8 @@ _G.Cream2011xSkin_UnleashedSounds = {}
 
 local function tryUpdatePlayer(player)
     if not player:IsA("Model") then return end
-    if not (player:GetAttribute("Character") == "2011x") then return end
-    if not ((player:GetAttribute("Skin") == "Default") or (player:GetAttribute("Skin") == "miku")) then return end
+    if player:GetAttribute("Character") ~= "2011x" then return end
+    if (player:GetAttribute("Skin") ~= "Default") and (player:GetAttribute("Skin") ~= "miku") then return end
 
     print("[Cream.LMS for 2011x] Prebuild updating Cream for " .. player.Name .. "...")
 
@@ -186,6 +212,9 @@ local function tryUpdatePlayer(player)
         warn("[Cream.LMS for 2011x] Player already have OverlayModel, update cancelled")
         return
     end
+
+    -- destroy bones
+    pcall(function() player:WaitForChild("RootPart"):WaitForChild("waist", 3):Destroy() end)
 
     -- xd
     if not player:FindFirstChild("Health") then
@@ -198,10 +227,10 @@ local function tryUpdatePlayer(player)
                 local val = player:GetAttribute(attr)
                 if val and val > 0 then
                     player.Health.Value = 100 - (val * 10)
-                    if not player:GetAttribute("State") == "rage" then player:SetAttribute("State", "alt") end
+                    if player:GetAttribute("State") ~= "rage" then player:SetAttribute("State", "alt") end
                 elseif not val or val <= 0 then
                     player.Health.Value = 100
-                    if not player:GetAttribute("State") == "rage" then player:SetAttribute("State", "default") end
+                    if not player:GetAttribute("State") ~= "rage" then player:SetAttribute("State", "default") end
                 end
             end
         end)
@@ -238,7 +267,7 @@ local function tryUpdatePlayer(player)
                 v.CollisionGroupId = 3
                 v.CanCollide = false
                 v.CanTouch = false
-            end 
+            end
         end
         for _, v in ipairs(game.ReplicatedStorage:FindFirstChild("Characters", true):FindFirstChild("Cream", true):FindFirstChild("cheese", true).HumanoidRootPart:GetChildren()) do
         	v:Clone().Parent = cheese.HumanoidRootPart
@@ -333,7 +362,7 @@ local function tryUpdatePlayer(player)
         if v:IsA("BasePart") and v.Name ~= "HumanoidRootPart" then
             v.LocalTransparencyModifier = 1
             v.Changed:Connect(function(property)
-            	task.wait()
+            	task.wait(0.1)
                 if property == "LocalTransparencyModifier" then
                     v.LocalTransparencyModifier = 1
                 end
@@ -527,6 +556,8 @@ local function tryUpdatePlayer(player)
         repeat task.wait(0.01) until workspace.CurrentCamera.CFrame ~= lastCamCFrame
         player:SetAttribute("Character", "2011x") -- huh
         player.Torso.Parent = OverlayModel
+
+        player.cam.lock.Value = OverlayModel.Head
     end
     
     -- kill Cheese...
@@ -567,10 +598,13 @@ local function tryUpdatePlayer(player)
     end
     task.spawn(function() headnervsss(player) end)
 
+    local reviveAnim = game:GetService("ReplicatedStorage").ClientAssets.Characters.Survivors.Cream.scriptstuff.Animate.Anims.Revive
+    local ReviveTrack = player.Humanoid.Animator:LoadAnimation(reviveAnim)
+    ReviveTrack.Priority = Enum.AnimationPriority.Core
+    ReviveTrack:Play(0.5)
 
     print("[Cream.LMS for 2011x] Updating finished for", player.Name .. "!")
 end
-
 
 local function onPlayerAdded(player)
     -- Check if they already spawned in
@@ -598,8 +632,50 @@ if _G.Cream2011xSkinTESTINGDUMMYConn then
 end
 _G.Cream2011xSkinTESTINGDUMMYConn = game.CollectionService:GetInstanceAddedSignal("TESTINGDUMMY"):Connect(tryUpdatePlayer)
 
+local textReplacements = {
+    ["Invisibility"] = "Hide 'N Seek",
+    ["Rage Mode"] = "Playtime",
+    ["2011x"] = " [CORRUPTED] ",
+    ["2011x / X"] = " [CORRUPTED] ",
+    ["Miku X"] = "Sark's Minion",
+    ["sonic but .... bloody eyes .. fear"] = "[Info] Instance copied successfully.\n"
+        .."[WARN] ReplicatedStorage missmatch!\n"
+        .."[WARN] Unauthorized access!\n"
+        .."> dont worry, thats just a way i can play :>\n"
+        .."Syntax error."
+}
+local TextLabelNames = {
+    CharName = true,
+    CharDesc = true,
+    ABName = true,
+    selectedChar = true,
+    char = true, -- vote screen (same names xd)
+    SkinName = true,
+}
+local function hookLabel(desc)
+    if not desc or not desc.Parent then return end
+    if not desc:IsA("TextLabel") then return end
+    if not TextLabelNames[desc.Name] then return end
+    -- warn("[Cream.LMS for 2011x] Watching TextLabel: "..desc.Name)
+    coroutine.wrap(function()
+        while true do
+            if not desc or not desc.Parent then 
+                -- warn("[Cream.LMS for 2011x] Lost TextLabel to watch: "..desc:GetFullName()) 
+                return 
+            end
+            if textReplacements[desc.Text] then desc.Text = textReplacements[desc.Text] end
+            task.wait() -- heartbeat mayb
+        end
+    end)()
+end
+_G.CreamOn2011xGUIConn = _G.CreamOn2011xGUIConn or nil
+if _G.CreamOn2011xGUIConn then  _G.CreamOn2011xGUIConn:Disconnect() _G.CreamOn2011xGUIConn = nil end
+_G.CreamOn2011xGUIConn = game.Players.LocalPlayer:WaitForChild("PlayerGui").DescendantAdded:Connect(hookLabel)
+for _, desc in ipairs(game.Players.LocalPlayer:WaitForChild("PlayerGui"):GetDescendants()) do hookLabel(desc) end
+print("[Cream.LMS for 2011x] Listening for your GUI...")
+
 local function myAsset(fileName)
-    local cachePath = "cache/lil2kki/Cream.LMS/" .. fileName
+    local cachePath = "cache/lil2kki/Cream.LMS///" .. fileName
     if isfile(cachePath) then return getcustomasset(cachePath) end
     local success, result = pcall(function()
         return game:HttpGet("https://github.com/lil2kki/My-Outcome-Memories/raw/HEAD/Cream.LMS/assets/" .. fileName) 
@@ -622,6 +698,10 @@ themes.Default.TerrorRadius.SoundId = myAsset("TerrorRadius2.mp3")
 themes.Default.NormalChase.SoundId = myAsset("NormalChase_alt.mp3")
 themes.Default.NormalChase.PlaybackRegion = NumberRange.new(0, 0)
 themes.Default.NormalChase.LoopRegion = NumberRange.new(0, 0)
+
+themes.miku.NormalChase.SoundId = myAsset("TRIODARKMATTERS.mp3")
+themes.miku.NormalChase.PlaybackRegion = NumberRange.new(0, 0)
+themes.miku.NormalChase.LoopRegion = NumberRange.new(0, 0)
 
 themes.Default.LastLifeChase.SoundId = myAsset("LastLifeChase_Overdrive.mp3")
 themes.Default.LastLifeChase.PlaybackRegion = NumberRange.new(0, 0)
